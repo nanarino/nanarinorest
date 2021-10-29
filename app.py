@@ -2,7 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import api
 
-app = FastAPI()
+
+app = FastAPI(title='nanarinorest')
+
 
 # 允许跨域
 app.add_middleware(

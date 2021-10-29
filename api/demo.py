@@ -9,12 +9,12 @@ from . import schemas
 demo = APIRouter(tags=["demo"])  # 和文件名一样方便导出
 
 
-@demo.get('/demo/{id}', response_model=Optional[schemas.demo])
+@demo.get('/demo/{id}', response_model=Optional[schemas.demo], summary="指定获取")
 async def get_demo(id: int, dbs: AsyncSession = Depends(db_session)):
-    return (await dbs.get(Demo, id))
+    return await dbs.get(Demo, id)
 
 
-@demo.get('/demos', response_model=schemas.demos_sliced)
+@demo.get('/demos', response_model=schemas.demos_sliced, summary="分页获取", description="limit∈[5,20], offset∈[2,∞)")
 async def get_demo_list(
     limit: int = Query(5, ge=5, le=20),  # 5 <= limit <= 20
     offset: int = Query(0, ge=0),  # offset >= 0
