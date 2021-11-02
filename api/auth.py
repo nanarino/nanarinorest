@@ -6,6 +6,7 @@ from db.models import User
 from util import jwt, pwd
 from sqlalchemy import select
 from pydantic import ValidationError
+from fastapi_limiter.depends import RateLimiter
 
 auth = APIRouter()
 
@@ -25,7 +26,12 @@ async def current(token: str = Depends(oauth2)):
     return dcd_user
 
 
-@auth.post("/auth/signin", response_model=schemas.auth_res, summary='授权登录')
+@auth.post("/auth/signin",
+           response_model=schemas.auth_res,
+           summary='授权登录',
+           dependencies=[Depends(RateLimiter(times=1, seconds=5))],
+           description="频率限制5秒1次"
+           )
 async def sign_in(
     form: OAuth2PasswordRequestForm = Depends(),
     dbs: AsyncSession = Depends(db_session)
@@ -42,7 +48,12 @@ async def sign_in(
     return {"access_token": access_token}
 
 
-@auth.post("/auth/signup", response_model=schemas.auth_res, summary='注册用户')
+@auth.post("/auth/signup",
+           response_model=schemas.auth_res,
+           summary='注册用户',
+           dependencies=[Depends(RateLimiter(times=1, seconds=5))],
+           description="频率限制5秒1次"
+           )
 async def sign_up(
     form: OAuth2PasswordRequestForm = Depends(),
     dbs: AsyncSession = Depends(db_session)
@@ -63,5 +74,10 @@ async def sign_up(
     return {"access_token": access_token}
 
 
-@auth.get("/auth/current", response_model=schemas.auth_token_data, summary='获取当前用户')
+@auth.get("/auth/current",
+          response_model=schemas.auth_token_data,
+          summary='获取当前用户',
+          dependencies=[Depends(RateLimiter(times=1, seconds=1))],
+          description="频率限制1秒1次"
+          )
 async def get_current_user(cu: schemas.user = Depends(current)): return cu

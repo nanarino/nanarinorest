@@ -19,7 +19,7 @@ ini.read(Path.cwd() / Path('config.ini'), encoding='utf8')
 cfg = ini['db']
 
 # 数据库引擎，也是连接池
-async_egn = create_async_engine(cfg.get('URL'))
+async_egn = create_async_engine(cfg.get('mysql'))
 
 # 创建session元类
 async_session_local = sessionmaker(

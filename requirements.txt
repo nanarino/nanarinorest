@@ -1,7 +1,11 @@
-aiomysql
-fastapi
 uvicorn
+fastapi
+sqlalchemy
+aiomysql
 python-jose[cryptography]
 python-multipart
 passlib
 bcrypt
+aioredis
+hiredis
+fastapi-limiter # https://github.com/long2ice/fastapi-limiter/issues/18#issuecomment-955888999
