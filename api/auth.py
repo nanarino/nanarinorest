@@ -1,5 +1,5 @@
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from . import schemas
 from db import db_session, AsyncSession
 from db.models import User
@@ -19,7 +19,7 @@ async def current(token: str = Depends(oauth2)):
         dcd_user = schemas.auth_token_data(**jwt.dcd(token))
     except ValidationError:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=401,
             detail="Invalid authentication credentials",
             headers={"WWW-Authenticate": "Bearer"}
         )
@@ -40,7 +40,7 @@ async def sign_in(
     _user = (await dbs.execute(select_orm)).scalars().first()
     if (_user is None) or not pwd.eq(form.password, _user.password):
         raise HTTPException(
-            status_code=400, detail="Incorrect username or password")
+            status_code=403, detail="Incorrect username or password")
     access_token = jwt.ecd(schemas.auth_token_data(
         uid=_user.id,
         uname=_user.username
@@ -61,7 +61,7 @@ async def sign_up(
     select_orm = select(User).where(User.username == form.username)
     if (await dbs.execute(select_orm)).scalars().first() is not None:
         raise HTTPException(
-            status_code=400, detail="The username already exists")
+            status_code=403, detail="The username already exists")
     hashed_pwd = pwd.hash(form.password)
     new_user = User(username=form.username, password=hashed_pwd)
     dbs.add(new_user)
