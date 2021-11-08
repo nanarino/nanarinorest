@@ -6,9 +6,7 @@ from fastapi_limiter import FastAPILimiter
 import db
 
 
-app = FastAPI(title='nanarinorest', description="""
-    * Oauth2授权强制字段名使用username和password，且规定请求使用application/x-www-form-urlencoded
-""")
+app = FastAPI(title='LLTS',description='由于OAuth2规范，授权表单字段强制使用username和password,所以用username表示卡号')
 
 
 @app.on_event("startup")
@@ -35,6 +33,7 @@ app.add_middleware(
 # 注册路由
 app.include_router(api.demo)
 app.include_router(api.auth, tags=["auth"])
+app.include_router(api.card, tags=["card"])
 
 
 if __name__ == '__main__':

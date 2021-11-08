@@ -28,6 +28,8 @@
   # 接口频率限制 从pip下载的库有bug，用git拉取的正常
   # 见 https://github.com/long2ice/fastapi-limiter/issues/18#issuecomment-955888999
   fastapi-limiter
+  # 生成人机验证图片
+  Pillow
   ```
 
 - mysql 5.7

@@ -12,8 +12,9 @@ class demos_sliced(BaseModel):
     slice_data: list[demo]
 
 
-class user(BaseModel):
+class card(BaseModel):
     id: int
+    is_active: int = 0
     username: str
     password: str
 
@@ -25,7 +26,7 @@ class auth_token_data(BaseModel):
     无法覆盖超时信息exp，因为它读取配置文件或者ecd的timeout参数
     不应包含sub等信息 会被特殊处理甚至解析不了
     '''
-    uid: int
+    cid: int
     uname: str
     exp: int = 0
     iss: str = ''
@@ -37,8 +38,37 @@ class auth_res(BaseModel):
     token_type: str = "bearer"
 
 
+class auth_captcha(BaseModel):
+    """请求验证码图片返回数据"""
+    captcha_token: str
+    captcha_img: str
+
+
+class card_bindinfo(BaseModel):
+    tbr_name: str
+    tbr_id_type: str
+    tbr_id_num: str
+    tbr_sex: str
+    tbr_birth: str
+    tbr_age: int
+    tbr_email: str
+    tbr_tel: str
+    tbr_addr: str
+    bbr_is_tbr: str
+    bbr_name: str
+    bbr_id_type: str
+    bbr_id_num: str
+    bbr_sex: str
+    bbr_birth: str
+    bbr_age: int
+    bbr_email: str
+    bbr_tel: str
+    bbr_addr: str
+    effect_date: str
+
+
 if __name__ == '__main__':
     try:
-        print(auth_token_data(**{'uname':1}))
+        print(auth_token_data(**{'uname': 1}))
     except Exception as e:
         print(type(e))
