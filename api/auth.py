@@ -80,4 +80,4 @@ async def sign_up(
           dependencies=[Depends(RateLimiter(times=1, seconds=1))],
           description="频率限制1秒1次"
           )
-async def get_current_user(cu: schemas.user = Depends(current)): return cu
+async def get_current_user(cu: schemas.auth_token_data = Depends(current)): return cu
