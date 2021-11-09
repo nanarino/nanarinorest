@@ -2,7 +2,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, HTTPException, Form
 from . import schemas
 from db import db_session, AsyncSession
-from db.models import Card
+from db.models import Card, Card_bindinfo
 from util import jwt, pwd, captcha
 from sqlalchemy import select
 from pydantic import ValidationError
@@ -13,7 +13,7 @@ auth = APIRouter()
 oauth2 = OAuth2PasswordBearer(tokenUrl="/auth/_signin")
 
 
-async def current(token: str = Depends(oauth2)):
+async def current(token: str = Depends(oauth2)) -> schemas.auth_token_data:
     """依赖项 获取当前用户id和用户名 失败401"""
     try:
         dcd_user = schemas.auth_token_data(**jwt.dcd(token))
@@ -56,6 +56,58 @@ async def sign_in(
         uname=_user.username
     ).dict())
     return {"access_token": access_token}
+
+
+@auth.post("/auth/signin_allow_bindid",
+           response_model=schemas.auth_res,
+           summary='授权登入卡号,密码允许使用绑定过的身份证',
+           dependencies=[Depends(RateLimiter(times=1, seconds=5))],
+           description="频率限制5秒1次，需要先请求验证图片，接口文档受限无法请求"
+           )
+async def sign_in_allow_bindid(
+    form: OAuth2PasswordRequestForm = Depends(),
+    dbs: AsyncSession = Depends(db_session),
+    captcha_token: str = Form(...),
+    captcha_key: str = Form(...)
+):
+    try:
+        captcha_key_dcd: str = jwt.dcd(captcha_token)["captcha_key"]
+    except KeyError:
+        raise HTTPException(
+            status_code=403, detail="验证码已过期")
+    if not (captcha_key.lower() == captcha_key_dcd.lower()):
+        raise HTTPException(
+            status_code=403, detail="验证码错误")
+
+    select_orm = select(Card).where(Card.username == form.username)
+    _user: Card = (await dbs.execute(select_orm)).scalars().first()
+
+    if _user is not None:
+        select_orm = select(Card_bindinfo).where(
+            Card_bindinfo.cid == _user.id).order_by(Card_bindinfo.id.desc())
+        _user_bindinfo: Card_bindinfo = (await dbs.execute(select_orm)).scalars().first()
+
+        if _user_bindinfo is not None:
+            if _user_bindinfo.tbr_id_num == form.password:
+                if not _user.is_active:
+                    raise HTTPException(
+                        status_code=412, detail="未激活的卡无法使用证件号登入")
+                else:
+                    access_token = jwt.ecd(schemas.auth_token_data(
+                        cid=_user.id,
+                        uname=_user.username
+                    ).dict())
+                    return {"access_token": access_token}
+
+        if pwd.eq(form.password, _user.password):
+            access_token = jwt.ecd(schemas.auth_token_data(
+                cid=_user.id,
+                uname=_user.username
+            ).dict())
+            return {"access_token": access_token}
+
+    raise HTTPException(
+        status_code=403, detail="卡号或者密码错误")
 
 
 @auth.post("/auth/_signin",
@@ -112,7 +164,7 @@ async def sign_up(
           dependencies=[Depends(RateLimiter(times=1, seconds=1))],
           description="频率限制1秒1次"
           )
-async def get_current_user(cu: schemas.card = Depends(current)): return cu
+async def get_current_user(cu: schemas.auth_token_data = Depends(current)): return cu
 
 
 @auth.get("/auth/captcha",

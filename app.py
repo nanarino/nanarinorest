@@ -34,6 +34,7 @@ app.add_middleware(
 app.include_router(api.demo)
 app.include_router(api.auth, tags=["auth"])
 app.include_router(api.card, tags=["card"])
+app.include_router(api.claim, tags=["claim"])
 
 
 if __name__ == '__main__':
