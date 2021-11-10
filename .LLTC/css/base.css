@@ -1,0 +1,119 @@
+/*清除元素默认的内外边距  */
+
+* {
+    margin: 0;
+    padding: 0
+}
+
+
+/*让所有斜体 不倾斜*/
+
+em,
+i {
+    font-style: normal;
+}
+
+
+/*去掉列表前面的小点*/
+
+li {
+    list-style: none;
+}
+
+
+/*图片没有边框   去掉图片底侧的空白缝隙*/
+
+img,svg {
+    border: 0;
+    image-rendering: pixelated;
+    /*ie6*/
+    vertical-align: middle;
+}
+
+
+/*让button 按钮 变成小手*/
+
+button {
+    cursor: pointer;
+}
+
+
+/*取消链接的下划线*/
+
+a {
+    color: #666;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+}
+
+button,
+input {
+    font-family: 'Microsoft YaHei', 'Heiti SC', tahoma, arial, 'Hiragino Sans GB', \\5B8B\4F53, sans-serif;
+}
+
+html,
+body {
+    background-color: #fff;
+    font: 12px/1.5 'Microsoft YaHei', 'Heiti SC', tahoma, arial, 'Hiragino Sans GB', \\5B8B\4F53, sans-serif;
+    color: #666
+}
+
+.hide,
+.none {
+    display: none;
+}
+
+/* @media screen and (min-width: 320px) {
+    html {font-size: 12px;}
+}
+ 
+@media screen and (min-width: 360px) {
+    html {font-size: 15px;}
+} */
+ 
+@media screen and (min-width: 350px) {
+    html {font-size: 45%;}
+}
+@media screen and (min-width: 450px) {
+    html {font-size: 62%;}
+}
+@media screen and (min-width: 520px) {
+    html {font-size: 72%}
+}
+
+@media screen and (min-width: 650px) {
+    html {font-size: 82%;}
+}
+@media screen and (min-width: 750px) {
+    html {font-size: 100%;}
+}
+@media screen and (min-width: 850px) {
+    html {font-size: 102%;}
+}
+@media screen and (min-width: 900px) {
+    html {font-size: 110%;}
+}
+
+/*浮动*/
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+
+/*清除浮动*/
+
+.clear::after {
+    visibility: hidden;
+    clear: both;
+    display: block;
+    content: " ";
+    height: 0
+}

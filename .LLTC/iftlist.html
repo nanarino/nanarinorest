@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>理赔列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/iftlist.css">
+    <script src="/js/sweetalert2@11.js"></script>
+    <script src="/js/axios.js"></script>
+    <script>
+        window.onload = async () => {
+
+            signout.onclick = () => {
+                Swal.fire({
+                    title: '确认要退出登录吗',
+                    showCancelButton: true,
+                    confirmButtonText: '确定',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: '退出完成',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            localStorage.clear()
+                            location.pathname = '/'
+                        })
+                    }
+                })
+
+            }
+
+            let cid, uname
+
+            try {
+                let { data } = await axios.get('http://127.0.0.1:8080/auth/current', {
+                    'headers': { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                })
+                cid = data.cid
+                uname = data.uname
+            } catch (err) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: err.response.data.detail,
+                    showCancelButton: true,
+                    confirmButtonText: '安全退出并返回首页',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: '退出完成',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            localStorage.clear()
+                            location.pathname = '/'
+                        })
+                    } else {
+                        setTimeout(() => {
+                            location.reload()
+                        }, 1500)
+                    }
+                })
+            }
+
+            _uname.innerHTML = `卡号: ${uname}`
+
+            try {
+                let { data } = await axios.get('http://127.0.0.1:8080/claims', {
+                    'headers': { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                })
+                console.log(data);
+                if(data?.length){
+
+                }else{
+                    crdlist.innerHTML = `<li>暂无理赔信息</li>`
+                }
+                
+            } catch (err) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: err.response.data.detail,
+                    showCancelButton: true,
+                    confirmButtonText: '安全退出并返回首页',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: '退出完成',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            localStorage.clear()
+                            location.pathname = '/'
+                        })
+                    } else {
+                        setTimeout(() => {
+                            location.reload()
+                        }, 1500)
+                    }
+                })
+            }
+
+        }
+    </script>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header">理赔状态列表</div>
+    <!-- 理赔列表 -->
+    <div class="cardlists">
+        <div class="cardnum" id="_uname"></div>
+        <ul class="crdlist" id='crdlist'></ul>
+        <!--<button class="seeifmt">查看投保信息</button>-->
+        <button class="safeout" id='signout'>安全退出</button>
+    </div>
+</body>
+
+</html>

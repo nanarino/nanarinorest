@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完成激活</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/attsct.css">
+    <script src="/js/sweetalert2@11.js"></script>
+    <script src="/js/axios.js"></script>
+    <script src="/js/vue2.6.10.js"></script>
+</head>
+
+<body>
+    <div id='app'>
+        <ul class="header">
+            <li>
+                <span>1</span>
+                <a>卡号密码</a>
+            </li>
+            <li>
+                <span>2</span>
+                <a>阅读条款</a>
+            </li>
+            <li>
+                <span>3</span>
+                <a>信息填写</a>
+            </li>
+            <li>
+                <span>4</span>
+                <a>完成激活</a>
+            </li>
+        </ul>
+        <!-- 激活成功 -->
+        <div class="atts">
+            <h1>本卡将在生效日自动激活</h1>
+            <h2>期间可以修改但需重设生效日</h2>
+            <h2>你也可以选择立即手动激活</h2>
+            <button id='b1' @click="active">手动激活</button>
+            <button id="b2" @click="goback">返回修改</button>
+            <button id="b3" class="signout" @click="signout">安全退出</button>
+        </div>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: "#app",
+            data: {
+                "cid": 0,
+                "uname": ""
+            },
+            methods: {
+                active() {
+                    axios.post('http://127.0.0.1:8080/card/active', {}, {
+                        'headers': { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                    }).then(res => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: '手动激活成功',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }).catch(err => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'warning',
+                            title: err.response.data.detail,
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
+                    })
+                },
+                goback() {
+                    Swal.fire({
+                        title: '确认要返回信息填写吗',
+                        showCancelButton: true,
+                        confirmButtonText: '返回',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.pathname = 'iftenter.html'
+                        }
+                    })
+                },
+                signout() {
+                    Swal.fire({
+                        title: '确认要退出登录吗',
+                        showCancelButton: true,
+                        confirmButtonText: '确定',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: '退出完成',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                localStorage.clear()
+                                location.pathname = '/'
+                            })
+                        }
+                    })
+                }
+            },
+            created() {
+                axios.get('http://127.0.0.1:8080/auth/current', {
+                    'headers': { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                }).then(res => {
+                    this.cid = res.data.cid
+                    this.uname = res.data.uname
+                }).catch(err => {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: err.response.data.detail,
+                        showCancelButton: true,
+                        confirmButtonText: '安全退出并返回首页',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: '退出完成',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                localStorage.clear()
+                                location.pathname = '/'
+                            })
+                        } else {
+                            setTimeout(() => {
+                                location.reload()
+                            }, 1500)
+                        }
+                    })
+                })
+            }
+        })
+    </script>
+</body>
+
+</html>

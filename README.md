@@ -1,6 +1,6 @@
-# nanarinorest
+# LLTS
 
-自用 restful api demo
+lulutong 服务端
 
 
 
@@ -55,5 +55,8 @@
 ├── util               # 封装的工具包
 ├── ...                # 测试脚本，静态资源等
 └── requirements.txt   # pip安装的模块
+
+
+.LLTC                   # 分离的客户端
 ```
 

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入口选择</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/css/base.css">
+    <style>
+        body{
+            background-color: #efeff4;
+        }
+        header.index{
+            position: fixed;
+            font-size: 3rem;
+            text-align: center;
+            width: 100vw;
+            top: 18vh;
+            color: #000;
+        }
+        nav.index{
+            width: 86vw;
+            margin: auto;
+        }
+        .index ul{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100vh;
+        }
+        .index li{
+            background-color: #1bac05;
+            width: 13rem;
+            height: 13rem;
+            border-radius: 50%;
+            font-size: 2rem;
+            line-height: 13rem;
+            text-align: center;
+        }
+        .index a{
+            display: block;
+            inset: 0;
+            color: azure;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <header class="index">
+        请选择入口
+    </header>
+    <nav class="index">
+        <ul>
+            <li><a href="/activation.html">激活</a></li>
+            <li><a href="/login.html">查询</a></li>
+            <li><a href="/iftcaim.html">理赔</a></li>
+        </ul>
+    </nav>
+</body>
+
+</html>

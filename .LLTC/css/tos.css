@@ -1,0 +1,199 @@
+body{
+    background-color: #efeff4;
+    height: 100vh;
+}
+/* 头部 */
+.header{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #c6c6c6;
+    padding:  4%;
+}
+.header li span{
+    border-radius: 50%;
+    background-color: #999999;
+    display: inline-block;
+    width: 2.6rem;
+    height: 2.6rem;
+    text-align: center;
+    margin-right: 0.3rem;
+    color: #fff;
+    line-height: 2.6rem;
+    font-size: 1.7rem;
+}
+.header li a{
+    font-size: 1.7rem;
+    color: #000;
+}
+.header li:nth-child(2) span{
+    background-color: #1bac05;
+}
+/* 条款列表 */
+.clauselist{
+    margin-top: 5%;
+}
+/* 第1行 */
+.clauselist .list1{
+    padding:  4%;
+    font-size: 2.5rem;
+    background-color: #f7f7f7;
+    color: #000;
+}
+.clauselist .list1 a{
+    font-size: 2rem;
+    color: #000;
+    margin-left: 10%;
+}
+.clauselist .list1 a span{
+    font-size: 2.3rem;
+    color: #f9b508;
+}
+/* 第2行 */
+.clauselist .list2{
+    padding:  4%;
+    font-size: 2rem;
+    color: #000;
+    background-color: #ededed;
+}
+/* 第3行 */
+.clauselist .list3{
+    padding:  4%;
+    font-size: 2rem;
+    background-color: #f7f7f7;
+    color: #000;
+}
+/* 第4行 */
+.clauselist .list4{
+    padding:  4%;
+    font-size: 2rem;
+    background-color: #ededed;
+    color: #000;
+}
+.clauselist .list4  span{
+    font-size: 2.3rem;
+    color: #f9b508;
+    margin-left: 7%;
+}
+/* 第5行 */
+.clauselist .list5{
+    padding:  4%;
+    font-size: 2rem;
+    background-color: #f7f7f7;
+    color: #000;
+}
+.clauselist .list5  span{
+    font-size: 2.3rem;
+    color: #f9b508;
+    margin-left: 7%;
+}
+/* 第6行 */
+.clauselist .list6{
+    padding: 2% 4%;
+    overflow-y: scroll;
+    height: 27vh;
+}
+.clauselist .list6 h3{
+    font-size: 2.4rem;
+    color: #101010;
+    margin-bottom: 6%;
+}
+.clauselist .list6 p{
+    font-size: 2.4rem;
+    color: #101010;
+    font-weight: bolder;
+}
+.clauselist .list6 p span{
+    font-size: 2rem;
+}
+.clauselist .list6 h6{
+    font-size: 1.7rem;
+    color: #101010;
+    margin-bottom: 5%;
+}
+.clauselist .list6 a{
+    font-size: 1.7rem;
+    color: #101010;
+    font-weight: bold;
+}
+/* 第7行 */
+.clauselist .list7{
+    padding:  4%;
+    font-size: 2rem;
+    background-color: #f7f7f7;
+    color: #000;
+}
+/* 第8行 */
+.clauselist .list8{
+    padding: 4%;
+    background-color: #ededed;
+}
+.clauselist .list8 a{
+    font-size: 2rem;
+    color: #040073;
+    margin-left: 4%;
+}
+/* 第9行 */
+.clauselist .list9{
+    padding: 4%;
+    background-color: #f7f7f7;
+}
+.clauselist .list9 a{
+    font-size: 2rem;
+    
+    color: #040073;
+    margin-left: 4%;
+}
+/* 第10行 */
+.clauselist .list10{
+    padding: 4%;
+    background-color: #ededed;
+}
+.clauselist .list10 a{
+    font-size: 2rem;
+    
+    color: #040073;
+    margin-left: 4%;
+}
+/* 第11行 */
+.clauselist .list11{
+    padding: 4%;
+    background-color: #f7f7f7;
+}
+.clauselist .list11 a{
+    font-size: 2rem;
+    color: #010101;
+    margin-left: 4%;
+}
+/* 第12行 */
+.clauselist .list12{
+    padding: 4%;
+    background-color: #efeff4;
+}
+.clauselist .list12 h6{
+    font-size: 1.7rem;
+    color: #101010;
+    margin-bottom: 5%;
+}
+.clauselist .list12 p{
+    font-size: 2rem;
+    color: #8f8f94;
+}
+.clauselist .list12 button{
+    width: 100%;
+    font-size: 2rem;
+    margin-top: 5%;
+}
+.clauselist .list12 .readbtn{
+    height: 6rem;
+    border: 1px solid #1bac05;
+    background-color: #1bac05;
+    color: #fff;
+    border-radius: 5px;
+}
+.clauselist .list12 .signout{
+    height: 6rem;
+    border: 1px solid #9da09d;
+    background-color: #9da09d;
+    color: #fff;
+    border-radius: 5px;
+}
