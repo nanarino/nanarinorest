@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信息录入</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/iftenter.css">
+    <script src="/js/sweetalert2@11.js"></script>
+    <script src="/js/axios.js"></script>
+    <script src="/js/vue2.6.10.js"></script>
+    <script src="/js/DateFormat.js"></script>
+    <style>
+        li {
+            position: relative;
+        }
+
+        li label:not(:first-child) {
+            position: absolute;
+            top: -2rem;
+            font-size: 1.2rem;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .green {
+            color: green;
+        }
+
+        .gray {
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='app'>
+        <ul class="header">
+            <li>
+                <span>1</span>
+                <a>卡号密码</a>
+            </li>
+            <li>
+                <span>2</span>
+                <a>阅读条款</a>
+            </li>
+            <li>
+                <span>3</span>
+                <a>信息填写</a>
+            </li>
+            <li>
+                <span>4</span>
+                <a>完成激活</a>
+            </li>
+        </ul>
+        <!-- 投保人信息 -->
+        <div class="clauselist">
+            <!-- 第2行 -->
+            <div class="list1">本卡卡号: {{uname}}</div>
+            <!-- 第3行 -->
+            <div class="list2">被保人年龄区间: 18至70周岁 </div>
+            <!-- 第8行 -->
+            <div class="list3">
+                <!-- 投保人信息 -->
+                <div class="enter1">
+                    <div class="altinfo">投保人信息</div>
+                    <ul class="infolist">
+                        <li>
+                            <label>姓名</label>
+                            <label :class="tbr_name_.color">{{tbr_name_.coutent}}</label>
+                            <input class="ipt" type="text" name="tbr_name" v-model="tbr_name" @blur="test($event)">
+                        </li>
+                        <li>
+                            <label>证件类型</label>
+                            <select name="tbr_id_type" v-model="tbr_id_type">
+                                <option value="身份证">身份证</option>
+                                <option value="驾照">驾照</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>证件号码</label>
+                            <label :class="tbr_id_num_.color">{{tbr_id_num_.coutent}}</label>
+                            <input class="ipt" type="data" name="tbr_id_num" v-model="tbr_id_num" @blur="test($event)">
+                        </li>
+                        <li>
+                            <label>性别</label>
+                            <input class="sex" type="radio" name="tbr_sex" v-model="tbr_sex" value="男"><a>男</a>
+                            <input class="sex" type="radio" name="tbr_sex" v-model="tbr_sex" value="女"><a>女</a>
+                            <input class="sex" type="radio" name="tbr_sex" v-model="tbr_sex" value="其他"><a>其他</a>
+                        </li>
+                        <li>
+                            <label>出生日期</label>
+                            <label :class="tbr_birth_.color">{{tbr_birth_.coutent}}</label>
+                            <input class="ipt" type="date" name="tbr_birth" v-model="tbr_birth" @blur="test($event)">
+                        </li>
+                        <li>
+                            <label>本卡生效时年龄</label>
+                            {{Math.max(tbr_age,0)}} 周岁
+                        </li>
+                        <li>
+                            <label>电子邮件</label>
+                            <label :class="tbr_email_.color">{{tbr_email_.coutent}}</label>
+                            <input class="ipt" type="email" name="tbr_email" v-model="tbr_email" @blur="test($event)">
+                        </li>
+                        <li>
+                            <label>手机号码</label>
+                            <label :class="tbr_tel_.color">{{tbr_tel_.coutent}}</label>
+                            <input class="ipt" type="text" name="tbr_tel" v-model="tbr_tel" @blur="test($event)">
+                        </li>
+                        <li>
+                            <label>联系地址</label>
+                            <label :class="tbr_addr_.color">{{tbr_addr_.coutent}}</label>
+                            <input class="ipt" type="text" name="tbr_addr" v-model="tbr_addr" @blur="test($event)">
+                        </li>
+                    </ul>
+                </div>
+                <!-- 被保人信息 -->
+                <div class="enter1">
+                    <div class="altinfo">被保人信息</div>
+                    <ul class="infolist">
+                        <li>
+                            <label>是投保人</label>
+                            <select name="bbr_is_tbr" v-model="bbr_is_tbr">
+                                <option value="本人">本人</option>
+                                <option value="父母">父母</option>
+                                <option value="子女">子女</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>姓名</label>
+                            <label :class="bbr_name_.color">{{bbr_name_.coutent}}</label>
+                            <input class="ipt" type="text" name="bbr_name" v-model="bbr_name" @blur="test($event)">
+                        </li>
+                        <li>
+                            <label>证件类型</label>
+                            <select name="bbr_id_type" v-model="bbr_id_type">
+                                <option value="身份证">身份证</option>
+                                <option value="驾照">驾照</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>证件号码</label>
+                            <label :class="bbr_id_num_.color">{{bbr_id_num_.coutent}}</label>
+                            <input class="ipt" type="data" name="bbr_id_num" v-model="bbr_id_num" @blur="test($event)">
+                        </li>
+                        <li>
+                            <label>性别</label>
+                            <input class="sex" type="radio" name="bbr_sex" v-model="bbr_sex" value="男"><a>男</a>
+                            <input class="sex" type="radio" name="bbr_sex" v-model="bbr_sex" value="女"><a>女</a>
+                            <input class="sex" type="radio" name="bbr_sex" v-model="bbr_sex" value="其他"><a>其他</a>
+                        </li>
+                        <li>
+                            <label>出生日期</label>
+                            <label :class="bbr_birth_.color">{{bbr_birth_.coutent}}</label>
+                            <input class="ipt" type="date" name="bbr_birth" v-model="bbr_birth" @blur="test($event)">
+                        </li>
+                        <li>
+                            <label>本卡生效时年龄</label>
+                            {{Math.max(bbr_age,0)}} 周岁
+                        </li>
+                        <li>
+                            <label>电子邮件</label>
+                            <label :class="bbr_email_.color">{{bbr_email_.coutent}}</label>
+                            <input class="ipt" type="email" name="bbr_email" v-model="bbr_email" @blur="test($event)">
+                        </li>
+                        <li>
+                            <label>手机号码</label>
+                            <label :class="bbr_tel_.color">{{bbr_tel_.coutent}}</label>
+                            <input class="ipt" type="text" name="bbr_tel" v-model="bbr_tel" @blur="test($event)">
+                        </li>
+                        <li>
+                            <label>联系地址</label>
+                            <label :class="bbr_addr_.color">{{bbr_addr_.coutent}}</label>
+                            <input class="ipt" type="text" name="bbr_addr" v-model="bbr_addr" @blur="test($event)">
+                        </li>
+                    </ul>
+                </div>
+                <!-- 受益人信息 -->
+                <div class="person">
+                    <div class="altinfo">受益人信息</div>
+                    <div class="texts">
+                        <p>受益人为法定继承人</p>
+                        <p>生效期限选择: {{td}}至{{t3d}}</p>
+                    </div>
+                    <div style="width: fit-content;margin: auto;">
+                        <label>生效日期</label><input type="date" name="effect_date" v-model="effect_date">
+                    </div>
+                </div>
+                <button class="readbtn" @click="readok">我已阅读并同意上述产品内容及相关条款</button>
+                <button class="signout" @click="signout">安全退出</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: "#app",
+            data: {
+                "td": (new Date(new Date - 0 + 3 * 24 * 3600000)).format("YYYY-MM-DD"),
+                "t3d": (new Date(new Date - 0 + 90 * 24 * 3600000)).format("YYYY-MM-DD"),
+                "cid": 0,
+                "uname": "",
+                "tbr_name": "",
+                tbr_name_: { coutent: "必填", color: "gray", missable: false },
+                "tbr_id_type": "身份证",
+                "tbr_id_num": "",
+                tbr_id_num_: { coutent: "必填", color: "gray", missable: false },
+                "tbr_sex": "男",
+                "tbr_birth": "",
+                tbr_birth_: { coutent: "必填", color: "gray", missable: false },
+                "tbr_age": 0,
+                "tbr_email": "",
+                tbr_email_: { coutent: "选填", color: "gray", missable: true },
+                "tbr_tel": "",
+                tbr_tel_: { coutent: "选填", color: "gray", missable: true },
+                "tbr_addr": "",
+                tbr_addr_: { coutent: "选填", color: "gray", missable: true },
+                "bbr_is_tbr": "父母",
+                "bbr_name": "",
+                bbr_name_: { coutent: "必填", color: "gray", missable: false },
+                "bbr_id_type": "身份证",
+                "bbr_id_num": "",
+                bbr_id_num_: { coutent: "必填", color: "gray", missable: false },
+                "bbr_sex": "男",
+                "bbr_birth": "",
+                bbr_birth_: { coutent: "必填", color: "gray", missable: false },
+                "bbr_age": 0,
+                "bbr_email": "",
+                bbr_email_: { coutent: "选填", color: "gray", missable: true },
+                "bbr_tel": "",
+                bbr_tel_: { coutent: "选填", color: "gray", missable: true },
+                "bbr_addr": "",
+                bbr_addr_: { coutent: "选填", color: "gray", missable: true },
+                "effect_date": (new Date(new Date - 0 + 3 * 24 * 3600000)).format("YYYY-MM-DD")
+            },
+            watch: {
+                bbr_is_tbr(_new, _old) {
+                    if (_new === '本人') {
+                        this.bbr_name = this.tbr_name
+                        this.bbr_id_type = this.tbr_id_type
+                        this.bbr_id_num = this.tbr_id_num
+                        this.bbr_sex = this.tbr_sex
+                        this.bbr_birth = this.tbr_birth
+                        this.bbr_age = this.tbr_age
+                        this.bbr_email = this.tbr_email
+                        this.bbr_tel = this.tbr_tel
+                        this.bbr_addr = this.tbr_addr
+                        Object.assign(this.bbr_name_, this.tbr_name_)
+                        Object.assign(this.bbr_id_num_, this.tbr_id_num_)
+                        Object.assign(this.bbr_birth_, this.tbr_birth_)
+                        Object.assign(this.bbr_email_, this.tbr_email_)
+                        Object.assign(this.bbr_tel_, this.tbr_tel_)
+                        Object.assign(this.bbr_addr_, this.tbr_addr_)
+                    }
+                }
+            },
+            methods: {
+                test(e) {
+                    if (this.$data[e.target.name] === '') {
+                        if (!this.$data[`${e.target.name}_`].missable) {
+                            this.$data[`${e.target.name}_`].color = "red"
+                            this.$data[`${e.target.name}_`].coutent = "必填"
+                        } else {
+                            this.$data[`${e.target.name}_`].color = "gray"
+                            this.$data[`${e.target.name}_`].coutent = "选填"
+                        }
+                        return
+                    }
+                    switch (e.target.name) {
+                        case 'tbr_name':
+                            if (this.tbr_name.length < 2) {
+                                this.tbr_name_.color = "red"
+                                this.tbr_name_.coutent = "姓名过短"
+                            } else if (this.tbr_name.match(/^[\u4e00-\u9fa5]{2,}$/g) === null) {
+                                this.tbr_name_.color = "red"
+                                this.tbr_name_.coutent = "姓名只能是汉字"
+                            } else {
+                                this.tbr_name_.color = "green"
+                                this.tbr_name_.coutent = "✔"
+                            }
+                            break
+                        case "bbr_name":
+                            if (this.bbr_name.length < 2) {
+                                this.bbr_name_.color = "red"
+                                this.bbr_name_.coutent = "姓名过短"
+                            } else if (this.bbr_name.match(/^[\u4e00-\u9fa5]{2,}$/g) === null) {
+                                this.bbr_name_.color = "red"
+                                this.bbr_name_.coutent = "姓名只能是汉字"
+                            } else {
+                                this.bbr_name_.color = "green"
+                                this.bbr_name_.coutent = "✔"
+                            }
+                            break
+                        case "tbr_email":
+                            if (this.tbr_email.match(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g) === null) {
+                                this.tbr_email_.color = "red"
+                                this.tbr_email_.coutent = "邮箱格式不正确"
+                            } else {
+                                this.tbr_email_.color = "green"
+                                this.tbr_email_.coutent = "✔"
+                            }
+                            break
+                        case "bbr_email":
+                            if (this.bbr_email.match(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g) === null) {
+                                this.bbr_email_.color = "red"
+                                this.bbr_email_.coutent = "邮箱格式不正确"
+                            } else {
+                                this.bbr_email_.color = "green"
+                                this.bbr_email_.coutent = "✔"
+                            }
+                            break
+                        case "tbr_tel":
+                            if (this.tbr_tel.match(/^1[0-9]{10}$/g) === null) {
+                                this.tbr_tel_.color = "red"
+                                this.tbr_tel_.coutent = "格式不符合国内手机号"
+                            } else {
+                                this.tbr_tel_.color = "green"
+                                this.tbr_tel_.coutent = "✔"
+                            }
+                            break
+                        case "bbr_tel":
+                            if (this.bbr_tel.match(/^1[0-9]{10}$/g) === null) {
+                                this.bbr_tel_.color = "red"
+                                this.bbr_tel_.coutent = "格式不符合国内手机号"
+                            } else {
+                                this.bbr_tel_.color = "green"
+                                this.bbr_tel_.coutent = "✔"
+                            }
+                            break
+                        case "tbr_id_num":
+                            if (this.tbr_id_type === "身份证") {
+                                //、、、、;
+                                if (this.tbr_id_num.length != 15 && this.tbr_id_num.length != 18) {
+                                    this.tbr_id_num_.color = "red"
+                                    this.tbr_id_num_.coutent = "身份证号位数不正确"
+                                } else if (this.tbr_id_num.match(/^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/g) === null) {
+                                    this.tbr_id_num_.color = "red"
+                                    this.tbr_id_num_.coutent = "身份证号格式不正确"
+                                } else {
+                                    this.tbr_id_num_.color = "green"
+                                    this.tbr_id_num_.coutent = "✔"
+                                    this.tbr_sex = ['女', '男'][this.tbr_id_num.substr(-2, 1) % 2]
+                                    let birth = Date.from(this.tbr_id_num.substr(6, 8))
+                                    this.tbr_birth = birth.format("YYYY-MM-DD")
+                                    let age = (new Date).format("YYYY") - birth.format("YYYY")
+                                    if ((new Date).format("MM-DD") < birth.format("MM-DD")) {
+                                        age--
+                                    }
+                                    this.tbr_age = age
+                                    this.tbr_birth_.color = "green"
+                                    this.tbr_birth_.coutent = "✔"
+                                }
+                            }
+                            if (this.tbr_id_type === "驾照") {
+                                if (this.tbr_id_num.length < 8) {
+                                    this.tbr_id_num_.color = "red"
+                                    this.tbr_id_num_.coutent = "驾照证件号过短"
+                                } else {
+                                    this.tbr_id_num_.color = "green"
+                                    this.tbr_id_num_.coutent = "✔"
+                                }
+                            }
+                            break
+                        case "bbr_id_num":
+                            if (this.bbr_id_type === "身份证") {
+                                //、、、、;
+                                if (this.bbr_id_num.length != 15 && this.bbr_id_num.length != 18) {
+                                    this.bbr_id_num_.color = "red"
+                                    this.bbr_id_num_.coutent = "身份证号位数不正确"
+                                } else if (this.bbr_id_num.match(/^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/g) === null) {
+                                    this.bbr_id_num_.color = "red"
+                                    this.bbr_id_num_.coutent = "身份证号格式不正确"
+                                } else {
+                                    this.bbr_id_num_.color = "green"
+                                    this.bbr_id_num_.coutent = "✔"
+                                    this.bbr_sex = ['女', '男'][this.bbr_id_num.substr(-2, 1) % 2]
+                                    let birth = Date.from(this.bbr_id_num.substr(6, 8))
+                                    this.bbr_birth = birth.format("YYYY-MM-DD")
+                                    let age = (new Date).format("YYYY") - birth.format("YYYY")
+                                    if ((new Date).format("MM-DD") < birth.format("MM-DD")) {
+                                        age--
+                                    }
+                                    this.bbr_age = age
+                                    this.bbr_birth_.color = "green"
+                                    this.bbr_birth_.coutent = "✔"
+                                }
+                            }
+                            if (this.bbr_id_type === "驾照") {
+                                if (this.bbr_id_num.length < 8) {
+                                    this.bbr_id_num_.color = "red"
+                                    this.bbr_id_num_.coutent = "驾照证件号过短"
+                                } else {
+                                    this.bbr_id_num_.color = "green"
+                                    this.bbr_id_num_.coutent = "✔"
+                                }
+                            }
+                            break
+                        case "tbr_birth":
+                            this.tbr_birth_.color = "green"
+                            this.tbr_birth_.coutent = "✔"
+                            var birth = Date.from(this.tbr_birth)
+                            var age = (new Date).format("YYYY") - birth.format("YYYY")
+                            if ((new Date).format("MM-DD") < birth.format("MM-DD")) {
+                                age--
+                            }
+                            this.tbr_age = age
+                            break
+                        case "bbr_birth":
+                            this.bbr_birth_.color = "green"
+                            this.bbr_birth_.coutent = "✔"
+                            var birth = Date.from(this.bbr_birth)
+                            var age = (new Date).format("YYYY") - birth.format("YYYY")
+                            if ((new Date).format("MM-DD") < birth.format("MM-DD")) {
+                                age--
+                            }
+                            this.bbr_age = age
+                            break
+                    }
+                },
+                readok() {
+                    if (this.bbr_age > 70 || this.bbr_age < 18) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: '被保人年龄不符合要求',
+                            footer: "被保人年龄区间: 18至70周岁",
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        return
+                    }
+                    if (this.effect_date > this.t3d || this.effect_date < this.td) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: '生效日期不符合要求',
+                            footer: "生效日期区间: 3天后到3个月内",
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        return
+                    }
+
+                    if ([this.bbr_name_, this.tbr_name_,
+                    this.bbr_id_num_, this.tbr_id_num_,
+                    this.bbr_birth_, this.tbr_birth_,
+                    this.bbr_email_, this.tbr_email_,
+                    this.bbr_tel_, this.tbr_tel_,
+                    this.bbr_addr_, this.tbr_addr_,]
+                        .every(v => (v.coutent === "✔") || (v.coutent === "选填"))) {
+                        axios.put('http://127.0.0.1:8080/card/bindinfo',
+                            {
+                                "tbr_name": this.tbr_name,
+                                "tbr_id_type": this.tbr_id_type,
+                                "tbr_id_num": this.tbr_id_num,
+                                "tbr_sex": this.tbr_sex,
+                                "tbr_birth": this.tbr_birth,
+                                "tbr_age": this.tbr_age,
+                                "tbr_email": this.tbr_email,
+                                "tbr_tel": this.tbr_tel,
+                                "tbr_addr": this.tbr_addr,
+                                "bbr_is_tbr": this.bbr_is_tbr,
+                                "bbr_name": this.bbr_name,
+                                "bbr_id_type": this.bbr_id_type,
+                                "bbr_id_num": this.bbr_id_num,
+                                "bbr_sex": this.bbr_sex,
+                                "bbr_birth": this.bbr_birth,
+                                "bbr_age": this.bbr_age,
+                                "bbr_email": this.bbr_email,
+                                "bbr_tel": this.bbr_tel,
+                                "bbr_addr": this.bbr_addr,
+                                "effect_date": this.effect_date
+                            },
+                            {
+                                'headers': {
+                                    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                                    accept: 'application/json'
+                                }
+                            }).then(res => {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: '绑定成功',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    location.pathname = 'attsct.html'
+                                })
+                            }).catch(err => {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'warning',
+                                    title: err.response.data.detail,
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                })
+                            })
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'warning',
+                            title: '存在不合格式要求的填写项',
+                            footer: "请检查是否有遗漏的必填项和已填项的格式是否正确",
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+
+                },
+                signout() {
+                    Swal.fire({
+                        title: '确认要退出登录吗',
+                        showCancelButton: true,
+                        confirmButtonText: '确定',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: '退出完成',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                localStorage.clear()
+                                location.pathname = '/'
+                            })
+                        }
+                    })
+                }
+            },
+            created() {
+                axios.get('http://127.0.0.1:8080/auth/current', {
+                    'headers': { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
+                }).then(res => {
+                    this.cid = res.data.cid
+                    this.uname = res.data.uname
+                }).catch(err => {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: err.response.data.detail,
+                        showCancelButton: true,
+                        confirmButtonText: '安全退出并返回首页',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: '退出完成',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                localStorage.clear()
+                                location.pathname = '/'
+                            })
+                        } else {
+                            setTimeout(() => {
+                                location.reload()
+                            }, 1500)
+                        }
+                    })
+                })
+            }
+        })
+    </script>
+</body>
+
+</html>
