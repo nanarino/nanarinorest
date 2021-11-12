@@ -12,12 +12,12 @@ demo = APIRouter(tags=["demo"])  # 和文件名一样方便导出
 
 
 @demo.get('/demo/{id}', response_model=Optional[schemas.demo], summary="指定获取单条")
-async def get_dict(id: int, dbs: AsyncSession = Depends(db_session)):
+async def get_demo(id: int, dbs: AsyncSession = Depends(db_session)):
     return await dbs.get(Demo, id)
 
 
 @demo.post('/demo', summary="新增单条")
-async def create_dict(data: schemas.demo_create, dbs: AsyncSession = Depends(db_session)):
+async def create_demo(data: schemas.demo_create, dbs: AsyncSession = Depends(db_session)):
     new_demo = Demo(create_at=datetime.now(), is_active=1, **data.dict())
     dbs.add(new_demo)
     await dbs.flush()
@@ -26,7 +26,7 @@ async def create_dict(data: schemas.demo_create, dbs: AsyncSession = Depends(db_
 
 
 @demo.delete('/demos', summary="删除指定多条")
-async def create_dict(data: schemas.del_data, dbs: AsyncSession = Depends(db_session)):
+async def del_demos(data: schemas.del_data, dbs: AsyncSession = Depends(db_session)):
     _orm = select(Demo).where(Demo.id.in_(data.id_set))
     demos_qs: list[Demo] = (await dbs.execute(_orm)).scalars().all()
     for d in demos_qs:
@@ -37,7 +37,7 @@ async def create_dict(data: schemas.del_data, dbs: AsyncSession = Depends(db_ses
 
 
 @demo.put('/demo', summary="修改单条")
-async def create_dict(data: schemas.demo_update, dbs: AsyncSession = Depends(db_session)):
+async def update_demo(data: schemas.demo_update, dbs: AsyncSession = Depends(db_session)):
     _orm = select(Demo).where(Demo.id == data.id)
     this_demo: Demo = (await dbs.execute(_orm)).scalars().first()
     for k, v in data.dict().items():
@@ -50,7 +50,7 @@ async def create_dict(data: schemas.demo_update, dbs: AsyncSession = Depends(db_
 
 
 @demo.get('/demos', response_model=schemas.demos_sliced, summary="分页获取多条")
-async def get_dicts_list(
+async def get_demos(
     limit: int = Query(5, ge=5, le=100),  # limit 5~100
     offset: int = Query(0, ge=0),         # offset >= 0
     dbs: AsyncSession = Depends(db_session)
