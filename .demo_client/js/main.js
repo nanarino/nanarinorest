@@ -118,7 +118,7 @@ async function update(id) {
         })
         let data = await res.json()
         console.log(data);
-        event = new Event('click')
+        let event = new Event('click')
         mark.dispatchEvent(event)
         alert(data.msg)
         this.onclick = null
@@ -141,7 +141,7 @@ function create() {
         })
         let data = await res.json()
         console.log(data);
-        event = new Event('click')
+        let event = new Event('click')
         mark.dispatchEvent(event)
         alert(data.msg)
         this.onclick = null
