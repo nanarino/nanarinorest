@@ -2,16 +2,6 @@
 from pydantic import BaseModel
 
 
-class demo(BaseModel):
-    id: int
-    name: str
-
-
-class demos_sliced(BaseModel):
-    total: int
-    slice_data: list[demo]
-
-
 class card(BaseModel):
     id: int
     is_active: int = 0

@@ -5,12 +5,6 @@ from sqlalchemy import Column
 from sqlalchemy.types import Integer, String
 
 
-class Demo(mapper_to_dict_able_mixin, Base):
-    __tablename__ = 'demo'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(255))
-
-
 class Card(mapper_to_dict_able_mixin, Base):
     __tablename__ = 'card'
     id = Column(Integer, primary_key=True)
@@ -43,4 +37,3 @@ class Card_bindinfo(mapper_to_dict_able_mixin, Base):
     bbr_tel = Column(String(255))
     bbr_addr = Column(String(255))
     effect_date = Column(String(255))
-

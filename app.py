@@ -31,7 +31,6 @@ app.add_middleware(
 )
 
 # 注册路由
-app.include_router(api.demo)
 app.include_router(api.auth, tags=["auth"])
 app.include_router(api.card, tags=["card"])
 app.include_router(api.claim, tags=["claim"])
