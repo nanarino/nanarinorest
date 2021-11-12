@@ -28,10 +28,10 @@ async def test_insert():
 
 async def test_insert_get_new_id_by_autocommit():
     async with async_session_local() as session:
-        async with session.begin():# 配合session.flush()
+        async with session.begin():# 开启事务，退出上下文后自动session.commit()
             new_demo = Demo(name='test_insert_get_new_id_by_autocommit')
             session.add(new_demo)
-            await session.flush()
+            await session.flush() #提交更改 以拿到自增后的id
             print(new_demo.id)
 
 async def test_insert_get_new_id():
@@ -40,7 +40,7 @@ async def test_insert_get_new_id():
         session.add(new_demo)
         await session.flush()
         print(new_demo.id)
-        await session.commit()  # 不自动提交就得开启async with session.begin
+        await session.commit()  # 推荐手动提交
 
 
 def start_loop(loop):

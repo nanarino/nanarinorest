@@ -20,7 +20,7 @@ async def get_demo(id: int, dbs: AsyncSession = Depends(db_session)):
 async def create_demo(data: schemas.demo_create, dbs: AsyncSession = Depends(db_session)):
     new_demo = Demo(create_at=datetime.now(), is_active=1, **data.dict())
     dbs.add(new_demo)
-    await dbs.flush()
+    # 使用await dbs.flush()后 new_demo.id可以拿到新增的行的id
     await dbs.commit()
     return {"msg": "新增成功"}
 
@@ -31,7 +31,6 @@ async def del_demos(data: schemas.del_data, dbs: AsyncSession = Depends(db_sessi
     demos_qs: list[Demo] = (await dbs.execute(_orm)).scalars().all()
     for d in demos_qs:
         d.is_active = 0
-    await dbs.flush()
     await dbs.commit()
     return {"msg": "删除成功"}
 
@@ -44,7 +43,6 @@ async def update_demo(data: schemas.demo_update, dbs: AsyncSession = Depends(db_
         if k == "id":
             pass
         setattr(this_demo, k, v)
-    await dbs.flush()
     await dbs.commit()
     return {"msg": "更新成功"}
 
