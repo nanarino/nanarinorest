@@ -1,6 +1,24 @@
 # nanarinorest
 
-自用 restful api demo
+自用 restful api demo 模板。
+
+接口频率限制使用的是redis，自用不需要时可以砍掉这个功能，
+
+需要删除入口文件app.py中挂载的startup和shutdown事件函数
+
+---
+
+
+
+## API demo
+
+增删改查完备，接口文档http://127.0.0.1:8080中可以看到已经提供了
+
+- GET    /demo/{id}    指定获取单条
+- PUT    /demo    修改指定单条
+- POST    /demo    新增单条
+- GET    /demos    分页获取多条
+- DELETE    /demos    删除指定多条
 
 
 
@@ -33,6 +51,8 @@
 - mysql 5.7
 
 - redis 5+
+
+
 
 ## 目录
 

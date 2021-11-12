@@ -11,7 +11,7 @@ from . import schemas
 demo = APIRouter(tags=["demo"])  # 和文件名一样方便导出
 
 
-@demo.get('/dict/{id}', response_model=Optional[schemas.demo], summary="指定获取单条")
+@demo.get('/demo/{id}', response_model=Optional[schemas.demo], summary="指定获取单条")
 async def get_dict(id: int, dbs: AsyncSession = Depends(db_session)):
     return await dbs.get(Demo, id)
 
