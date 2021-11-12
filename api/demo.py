@@ -34,5 +34,5 @@ async def get_demo_list(
     total: int = (await dbs.execute(total_orm)).scalar()
     # 分页数据
     slice_data_orm = select(Demo).order_by(Demo.id).limit(limit).offset(offset)
-    slice_data: list[schemas.demo] = (await dbs.execute(slice_data_orm)).scalars().all()
+    slice_data: list[Demo] = (await dbs.execute(slice_data_orm)).scalars().all()
     return {"total": total, "slice_data": slice_data}
