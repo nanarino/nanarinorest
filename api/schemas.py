@@ -1,10 +1,25 @@
 """请求响应所需的类型注释 以及作为fastapi docs的schema"""
+from datetime import datetime
 from pydantic import BaseModel
 
 
-class demo(BaseModel):
-    id: int
+class del_data(BaseModel):
+    id_set: set[int]
+
+
+class demo_create(BaseModel):  # 创建的时候不需要传id和创建时间
     name: str
+    type: str
+    mark: str
+
+
+class demo_update(demo_create):  # 修改的时候不需要传创建时间
+    id: int
+
+
+class demo(demo_update):
+    id: int
+    create_at: datetime
 
 
 class demos_sliced(BaseModel):
@@ -38,7 +53,4 @@ class auth_res(BaseModel):
 
 
 if __name__ == '__main__':
-    try:
-        print(auth_token_data(**{'uname':1}))
-    except Exception as e:
-        print(type(e))
+    pass
