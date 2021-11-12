@@ -2,6 +2,8 @@
 
 lulutong 服务端
 
+生成的接口文档 http://127.0.0.1:8080/docs
+
 
 
 ## 环境
@@ -57,8 +59,8 @@ lulutong 服务端
 └── requirements.txt   # pip安装的模块
 
 
-.LLTC                  # 分离的客户端
+.LLTC                  # 客户端demo
 ```
 
-接口文档 http://127.0.0.1:8080/docs
+
 
