@@ -45,7 +45,6 @@ async def create_card_bindinfo(
             status_code=412, detail="无法给已激活的卡号新增绑定")
     card_bindinfo = Card_bindinfo(cid=card.id, **bindinfo.dict())
     dbs.add(card_bindinfo)
-    await dbs.flush()
     await dbs.commit()
     return {"msg": "覆盖绑定信息成功"}
 
@@ -73,7 +72,6 @@ async def card_active(
         raise HTTPException(
             status_code=412, detail="无法给还未绑定信息的卡激活")
     card.is_active = 1
-    await dbs.flush()
     await dbs.commit()
     return {"msg": "手动激活本卡成功"}
 
