@@ -54,7 +54,7 @@ async def get_demos(
     dbs: AsyncSession = Depends(db_session)
 ):
     # 总数据条数
-    total_orm = select(func.count(Demo.id))
+    total_orm = select(func.count(Demo.id)).where(Demo.is_active == 1)
     total: int = (await dbs.execute(total_orm)).scalar()
     # 分页数据
     slice_data_orm = select(Demo).where(Demo.is_active == 1).order_by(
