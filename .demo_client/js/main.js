@@ -176,26 +176,37 @@ window.onload = async () => {
             total = data.total
             length = Math.ceil(total / limit)
             allnum.innerHTML = total
-            if(index<1){
-                index = 1
-                location.hash = '#1'
-                return
-            }else if(index>length){
-                index = length
-                location.hash = '#' + length
-                return
-            }
-            list.innerHTML = data.slice_data.reduce((html, v) => html + `
-                <li>
-                    <span><img class='img_item' onclick="check(${v.id})" data-id='${v.id}' data-check='0' src='/img/未选.svg'></span>
-                    <span>${v.id}</span>
-                    <span>${v.name}</span>
-                    <span>${v.type}</span>
-                    <span>${v.mark}</span>
-                    <span>${v.create_at}</span>
-                    <span><a onclick="update(${v.id})"><img src='/img/修改.svg'>修改</a> <a onclick="delone(${v.id})"><img src='/img/删除.svg'>删除</a></span>
-                </li>
-            `, `<li>
+            if(total){
+                if(index<1){
+                    index = 1
+                    location.hash = '#1'
+                    return
+                }else if(index>length){
+                    index = length
+                    location.hash = '#' + length
+                    return
+                }
+                list.innerHTML = data.slice_data.reduce((html, v) => html + `
+                    <li>
+                        <span><img class='img_item' onclick="check(${v.id})" data-id='${v.id}' data-check='0' src='/img/未选.svg'></span>
+                        <span>${v.id}</span>
+                        <span>${v.name}</span>
+                        <span>${v.type}</span>
+                        <span>${v.mark}</span>
+                        <span>${v.create_at}</span>
+                        <span><a onclick="update(${v.id})"><img src='/img/修改.svg'>修改</a> <a onclick="delone(${v.id})"><img src='/img/删除.svg'>删除</a></span>
+                    </li>
+                `, `<li>
+                        <span><img class='img_all' onclick="checkAll()" data-check='0' src='/img/未选.svg'></span>
+                        <span><b>编号</b></span>
+                        <span><b>名称</b></span>
+                        <span><b>类型</b></span>
+                        <span><b>备注</b></span>
+                        <span><b>创建时间</b></span>
+                        <span><b>操作</b></span>
+                </li>`)
+            }else{
+                list.innerHTML = `<li>
                     <span><img class='img_all' onclick="checkAll()" data-check='0' src='/img/未选.svg'></span>
                     <span><b>编号</b></span>
                     <span><b>名称</b></span>
@@ -203,7 +214,8 @@ window.onload = async () => {
                     <span><b>备注</b></span>
                     <span><b>创建时间</b></span>
                     <span><b>操作</b></span>
-            </li>`)
+                </li>` + `<li><span></span><span></span><span></span><span>暂无数据</span><span></span><span></span><span></span></li>`
+            }
         }
         await req()
         window.onhashchange = async () => {
