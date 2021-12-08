@@ -7,6 +7,7 @@ from .base import table, metadata
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from . import models
+from typing import Callable, AsyncGenerator
 
 __all__ = ['async_egn', 'async_session_local', 'db_session',
            'table', 'metadata', 'models', AsyncSession]
@@ -22,7 +23,7 @@ cfg = ini['db']
 async_egn = create_async_engine(cfg.get('mysql'))
 
 # 创建session元类
-async_session_local = sessionmaker(
+async_session_local: Callable[..., AsyncSession] = sessionmaker(
     class_=AsyncSession,
     autocommit=cfg.getboolean('autocommit', False),
     autoflush=cfg.getboolean('autoflush', False),
@@ -30,7 +31,7 @@ async_session_local = sessionmaker(
 )
 
 
-async def db_session() -> AsyncSession:
+async def db_session() -> AsyncGenerator[AsyncSession, None]:
     '''session生成器 作为fastapi的Depends选项'''
     async with async_session_local() as session:
         yield session
