@@ -4,30 +4,31 @@ from pydantic import BaseModel
 
 
 class del_data(BaseModel):
+    '''批量删除'''
     id_set: set[int]
 
 
-class demo_create(BaseModel):  # 创建的时候不需要传id和创建时间
+class demo_set(BaseModel):
+    '''创建和修改需要的demo数据'''
     name: str
     type: str
     mark: str
 
 
-class demo_update(demo_create):  # 修改的时候不需要传创建时间
-    id: int
-
-
-class demo(demo_update):
+class demo(demo_set):
+    '''完整demo数据'''
     id: int
     create_at: datetime
 
 
 class demos_sliced(BaseModel):
+    '''分页demo数据'''
     total: int
     slice_data: list[demo]
 
 
 class user(BaseModel):
+    '''用户数据'''
     id: int
     username: str
     password: str

@@ -15,7 +15,7 @@
 增删改查完备，生成的接口文档 http://127.0.0.1:8080/docs
 
 - GET    /demo/{id}    指定获取单条
-- PUT    /demo    修改指定单条
+- PUT    /demo/{id}    修改指定单条
 - POST    /demo    新增单条
 - GET    /demos    分页获取多条
 - DELETE    /demos    删除指定多条

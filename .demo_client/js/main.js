@@ -107,9 +107,8 @@ async function update(id) {
     markform_3.value = data.mark
     mark.style.display = "block"
     subm.onclick = async function () {
-        let res = await fetch(`http://127.0.0.1:8080/demo`, {
+        let res = await fetch(`http://127.0.0.1:8080/demo/${id}`, {
             body: JSON.stringify({
-                id,
                 name: markform_1.value,
                 type: markform_2.value,
                 mark: markform_3.value,

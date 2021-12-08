@@ -6,7 +6,7 @@ from db import db_session, AsyncSession
 from db.models import Demo
 from sqlalchemy import func, select
 from . import schemas
-#from fastapi_limiter.depends import RateLimiter # demo接口不限制频率
+# from fastapi_limiter.depends import RateLimiter # demo接口不限制频率
 
 demo = APIRouter(tags=["demo"])  # 和文件名一样方便导出
 
@@ -17,7 +17,7 @@ async def get_demo(id: int, dbs: AsyncSession = Depends(db_session)):
 
 
 @demo.post('/demo', summary="新增单条")
-async def create_demo(data: schemas.demo_create, dbs: AsyncSession = Depends(db_session)):
+async def create_demo(data: schemas.demo_set, dbs: AsyncSession = Depends(db_session)):
     new_demo = Demo(create_at=datetime.now(), is_active=1, **data.dict())
     dbs.add(new_demo)
     # 使用await dbs.flush()后 new_demo.id可以拿到新增的行的id
@@ -35,13 +35,11 @@ async def del_demos(data: schemas.del_data, dbs: AsyncSession = Depends(db_sessi
     return {"msg": "删除成功"}
 
 
-@demo.put('/demo', summary="修改单条")
-async def update_demo(data: schemas.demo_update, dbs: AsyncSession = Depends(db_session)):
-    _orm = select(Demo).where(Demo.id == data.id)
+@demo.put('/demo/{id}', summary="修改单条")
+async def update_demo(id: int, data: schemas.demo_set, dbs: AsyncSession = Depends(db_session)):
+    _orm = select(Demo).where(Demo.id == id)
     this_demo: Demo = (await dbs.execute(_orm)).scalars().first()
     for k, v in data.dict().items():
-        if k == "id":
-            pass
         setattr(this_demo, k, v)
     await dbs.commit()
     return {"msg": "更新成功"}
