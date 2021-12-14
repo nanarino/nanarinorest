@@ -29,20 +29,27 @@
   ```python
   # pip install
   
+  # 数据接口类型
+  pydantic
+  
   # ASGI服务
   uvicorn
   fastapi
+  
   # 异步ORM操作mysql
   sqlalchemy
   aiomysql
-  # Oauth2授权
+  
+  # Oauth2授权以及散列
   python-jose[cryptography]
   python-multipart
   passlib
   bcrypt
+  
   # 异步Redis存取
   aioredis
   hiredis
+  
   # 接口频率限制 从pip下载的库有bug，用git拉取的正常
   # 见 https://github.com/long2ice/fastapi-limiter/issues/18#issuecomment-955888999
   fastapi-limiter
