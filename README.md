@@ -25,40 +25,27 @@
 ## 环境
 
 - python 3.9
-
-  ```python
-  # pip install
-  
-  # 数据接口类型
-  pydantic
-  
-  # ASGI服务
-  uvicorn
-  fastapi
-  
-  # 异步ORM操作mysql
-  sqlalchemy
-  aiomysql
-  
-  # Oauth2授权以及散列
-  python-jose[cryptography]
-  python-multipart
-  passlib
-  bcrypt
-  
-  # 异步Redis存取
-  aioredis
-  hiredis
-  
-  # 接口频率限制 从pip下载的库有bug，用git拉取的正常
-  # 见 https://github.com/long2ice/fastapi-limiter/issues/18#issuecomment-955888999
-  fastapi-limiter
-  ```
-
-- mysql 5.7
-
+- mysql 5.7 （charset==utf8mb4）
 - redis 5+
 
+```bash
+
+# 安装依赖
+pip install -r requirements.txt
+
+  #其中：
+  fastapi-limiter==0.1.4
+  # 从pip下载的库有bug，用git拉取github上的版本会正常
+  # 见 https://github.com/long2ice/fastapi-limiter/issues/18#issuecomment-955888999
+
+
+# 配置好./config.ini后创建空的数据表
+py db_create.py
+
+# 运行项目
+py app.py
+
+```
 
 
 ## 目录
@@ -81,7 +68,7 @@
 ├── ...                # 测试脚本，静态资源等
 └── requirements.txt   # pip安装的模块
 
-
+│
 .demo_client           # web客户端demo
 ```
 
