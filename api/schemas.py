@@ -3,19 +3,14 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class del_data(BaseModel):
-    '''批量删除'''
-    id_set: set[int]
-
-
-class demo_set(BaseModel):
+class demo_update(BaseModel):
     '''创建和修改需要的demo数据'''
     name: str
     type: str
     mark: str
 
 
-class demo(demo_set):
+class demo(demo_update):
     '''完整demo数据'''
     id: int
     create_at: datetime

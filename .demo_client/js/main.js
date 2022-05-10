@@ -51,16 +51,11 @@ function checkAll() {
     }
 }
 async function delone(id) {
-    let res = await fetch(`http://127.0.0.1:8080/demos`, {
-        body: JSON.stringify({
-            "id_set": [id]
-        }),
+    let res = await fetch(`http://127.0.0.1:8080/demos?id=${id}`, {
         cache: 'no-cache',
-        headers: { 'content-type': 'application/json' },
         method: "DELETE"
     })
     let data = await res.json()
-    console.log(data)
     alert(data.msg)
     let change = new Event("change")
     pagenum.dispatchEvent(change)
@@ -72,16 +67,12 @@ async function delmany() {
         alert("只能选择后才能删除")
         return
     }
-    let res = await fetch(`http://127.0.0.1:8080/demos`, {
-        body: JSON.stringify({
-            "id_set": ids
-        }),
+    const qs = ids.reduce((qs,v)=>(qs.append('id',v),qs), new URLSearchParams())
+    let res = await fetch(`http://127.0.0.1:8080/demos?${qs}`, {
         cache: 'no-cache',
-        headers: { 'content-type': 'application/json' },
         method: "DELETE"
     })
     let data = await res.json()
-    console.log(data)
     alert(data.msg)
     let change = new Event("change")
     pagenum.dispatchEvent(change)
@@ -100,7 +91,6 @@ async function update(id) {
     }
     let res = await fetch(`http://127.0.0.1:8080/demo/${id}`)
     let data = await res.json()
-    console.log(data);
     subm.value = "修改"
     markform_1.value = data.name
     markform_2.value = data.type
@@ -118,7 +108,6 @@ async function update(id) {
             method: "PUT"
         })
         let data = await res.json()
-        console.log(data);
         let event = new Event('click')
         mark.dispatchEvent(event)
         alert(data.msg)
@@ -141,7 +130,6 @@ function create() {
             method: "POST"
         })
         let data = await res.json()
-        console.log(data);
         let event = new Event('click')
         mark.dispatchEvent(event)
         alert(data.msg)

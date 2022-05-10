@@ -41,4 +41,9 @@ if __name__ == '__main__':
     import os
     os.system('')
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    # uvicorn.run(app, host="0.0.0.0", port=8080) 
+    # WARNING:  You must pass the application as an import string to enable 'reload' or 'workers'.
+    uvicorn.run(app="app:app", host="0.0.0.0",port=8080, reload=True, debug=True)
+
+    # ERROR:    [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。
+    # 意味着端口号可能被占用
