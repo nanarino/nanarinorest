@@ -37,7 +37,7 @@ async def sign_in(
     dbs: AsyncSession = Depends(db_session)
 ):
     select_orm = select(User).where(User.username == form.username)
-    _user = (await dbs.execute(select_orm)).scalars().first()
+    _user: User = (await dbs.execute(select_orm)).scalars().first()
     if (_user is None) or not pwd.eq(form.password, _user.password):
         raise HTTPException(
             status_code=403, detail="Incorrect username or password")
