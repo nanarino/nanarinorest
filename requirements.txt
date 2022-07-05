@@ -7,6 +7,6 @@ python-jose[cryptography]
 python-multipart
 passlib
 bcrypt
-aioredis
+redis
 hiredis
 git+https://github.com/long2ice/fastapi-limiter.git
