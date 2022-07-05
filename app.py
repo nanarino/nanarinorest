@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import api
-import aioredis
+import redis.asyncio as aioredis
 from fastapi_limiter import FastAPILimiter
 import db
 
@@ -12,7 +12,7 @@ app = FastAPI(title='LLTS',description='由于OAuth2规范，授权表单字段�
 @app.on_event("startup")
 async def startup():
     # 初始化FastAPILimiter 用来限制api请求频率 默认返回429错误
-    redis = await aioredis.from_url(db.cfg.get('redis'), encoding="utf8")
+    redis = aioredis.from_url(db.cfg.get('redis'), encoding="utf8")
     await FastAPILimiter.init(redis)
 
 

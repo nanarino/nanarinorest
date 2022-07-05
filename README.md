@@ -31,7 +31,7 @@ lulutong 服务端
   bcrypt
   
   # 异步Redis存取
-  aioredis
+  redis
   hiredis
   
   # 接口频率限制 从pip下载的库有bug，用git拉取的正常
