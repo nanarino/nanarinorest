@@ -9,5 +9,5 @@ passlib
 bcrypt
 aioredis
 hiredis
-fastapi-limiter # https://github.com/long2ice/fastapi-limiter/issues/18#issuecomment-955888999
+git+https://github.com/long2ice/fastapi-limiter.git
 Pillow
