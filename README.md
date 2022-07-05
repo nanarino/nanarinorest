@@ -34,8 +34,8 @@
 pip install -r requirements.txt
 
   #其中：
-  fastapi-limiter==0.1.4
-  # 从pip下载的库有bug，用git拉取github上的版本会正常
+  fastapi-limiter
+  # 从pip下载的库不是最新版本
   # 见 https://github.com/long2ice/fastapi-limiter/issues/18#issuecomment-955888999
 
 

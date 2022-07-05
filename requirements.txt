@@ -9,4 +9,4 @@ passlib
 bcrypt
 aioredis
 hiredis
-fastapi-limiter
+git+https://github.com/long2ice/fastapi-limiter.git
