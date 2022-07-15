@@ -2,9 +2,7 @@
 
 自用 restful api demo 模板。
 
-接口频率限制使用的是redis，自用不需要时可以砍掉这个功能，
-
-需要删除入口文件app.py中挂载的startup和shutdown事件函数
+接口频率限制使用的是redis，自用不需要时可以砍掉这个功能， 需要删除入口文件app.py中挂载的startup和shutdown事件函数
 
 ---
 
@@ -59,16 +57,31 @@ py app.py
 │   ├── __init__.py
 │   ├── auth.py        # Oauth2授权认证 登录以及注册api
 │   ├── schemas.py     # 类型检查以及生成文档所需类型声明
-│   └── ...            # 其他api 子路由等文件
+│   └── demo.py        # 一组增删改查的 Demo api
 ├── db
 │   ├── __init__.py
 │   ├── base.py        # ORM mapper基类以及收集的数据元
 │   └── models.py      # 数据库模型
 ├── util               # 封装的工具包
-├── ...                # 测试脚本，静态资源等
-└── requirements.txt   # pip安装的模块
+└── requirements.txt   # 依赖列表
 
 │
-.demo_client           # web客户端demo
+demo_frontend          # 为 Demo api 编写的 Demo Frontend
+
 ```
 
+
+---
+
+
+## 运行前端
+
+将app.py运行到127.0.0.1:8080后，运行与其对应的 demo前端
+
+```bash
+
+cd demo_frontend
+
+py -m http.server 8081
+
+```

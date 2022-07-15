@@ -2,5 +2,13 @@
 /.vscode
 */.idea
 */.vscode
+
+# build
 */dist
-*.pyc
+
+# nodejs
+*/node_modules
+
+# cpython
+__pycache__/
+*.py[cod]

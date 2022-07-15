@@ -1,103 +1,96 @@
 function range(s, e) {
     if (s > e) return []
-    let arr = []
+    const arr = []
     for (let i = s; i < e; i++) {
         arr.push(i)
     }
     return arr
 }
 function check(id) {
-    let el = document.querySelector(`.img_item[data-id='${id}']`)
-    let els = Array.from(document.querySelectorAll(`.img_item`))
-    let el_all = document.querySelector(`.img_all`)
+    const el = document.querySelector(`.img_item[data-id='${id}']`)
+    const els = Array.from(document.querySelectorAll(`.img_item`))
+    const el_all = document.querySelector(`.img_all`)
     if (el.dataset['check'] === '1') {
         el.dataset['check'] = '0'
-        el.src = '/img/未选.svg'
+        el.src = '/img/uncheck.svg'
         el_all.dataset['check'] = '0'
         if (els.every(e => !(1 * e.dataset['check']))) {
-            el_all.src = '/img/未选.svg'
+            el_all.src = '/img/uncheck.svg'
         } else {
-            el_all.src = '/img/增加.svg'
+            el_all.src = '/img/checkall.svg'
         }
     } else {
         el.dataset['check'] = '1'
-        el.src = '/img/已选.svg'
+        el.src = '/img/checked.svg'
         if (els.every(e => 1 * e.dataset['check'])) {
-            el_all.src = '/img/已选.svg'
+            el_all.src = '/img/checked.svg'
         } else {
-            el_all.src = '/img/增加.svg'
+            el_all.src = '/img/checkall.svg'
             el_all.dataset['check'] = '1'
         }
 
     }
 }
 function checkAll() {
-    let el_all = document.querySelector(`.img_all`)
-    let els = Array.from(document.querySelectorAll(`.img_item`))
+    const el_all = document.querySelector(`.img_all`)
+    const els = Array.from(document.querySelectorAll(`.img_item`))
     if (el_all.dataset['check'] === '1') {
         el_all.dataset['check'] = '0'
-        el_all.src = '/img/未选.svg'
+        el_all.src = '/img/uncheck.svg'
         els.map(el => {
             el.dataset['check'] = '0'
-            el.src = '/img/未选.svg'
+            el.src = '/img/uncheck.svg'
         })
     } else {
         el_all.dataset['check'] = '1'
-        el_all.src = '/img/已选.svg'
+        el_all.src = '/img/checked.svg'
         els.map(el => {
             el.dataset['check'] = '1'
-            el.src = '/img/已选.svg'
+            el.src = '/img/checked.svg'
         })
     }
 }
 async function delone(id) {
-    let res = await fetch(`http://127.0.0.1:8080/demos?id=${id}`, {
+    const res = await fetch(`http://127.0.0.1:8080/demos?id=${id}`, {
         cache: 'no-cache',
         method: "DELETE"
     })
-    let data = await res.json()
-    alert(data.msg)
-    let change = new Event("change")
-    pagenum.dispatchEvent(change)
+    alert((await res.json()).msg)
+    pagenum.dispatchEvent(new Event("change"))
 }
 async function delmany() {
-    let els = Array.from(document.querySelectorAll(`.img_item`))
-    let ids = els.filter(el => el.dataset['check'] === '1').map(el => el.dataset['id'])
+    const els = Array.from(document.querySelectorAll(`.img_item`))
+    const ids = els.filter(el => el.dataset['check'] === '1').map(el => el.dataset['id'])
     if (ids.length < 1) {
-        alert("只能选择后才能删除")
+        alert("Pick at least one")
         return
     }
     const qs = ids.reduce((qs,v)=>(qs.append('id',v),qs), new URLSearchParams())
-    let res = await fetch(`http://127.0.0.1:8080/demos?${qs}`, {
+    const res = await fetch(`http://127.0.0.1:8080/demos?${qs}`, {
         cache: 'no-cache',
         method: "DELETE"
     })
-    let data = await res.json()
-    alert(data.msg)
-    let change = new Event("change")
-    pagenum.dispatchEvent(change)
+    alert((await res.json()).msg)
+    pagenum.dispatchEvent(new Event("change"))
 }
 async function update(id) {
     if (!id) {
-        let els = Array.from(document.querySelectorAll(`.img_item`))
-        let ids = els.filter(el => el.dataset['check'] === '1').map(el => el.dataset['id'])
+        const els = Array.from(document.querySelectorAll(`.img_item`))
+        const ids = els.filter(el => el.dataset['check'] === '1').map(el => el.dataset['id'])
         if (ids.length !== 1) {
-            alert("只能在选中一个的时候修改")
+            alert("You can only pick one")
             return
-        } else {
-            id = ids[0]
         }
-
+        id = ids[0]
     }
-    let res = await fetch(`http://127.0.0.1:8080/demo/${id}`)
-    let data = await res.json()
-    subm.value = "修改"
+    const data = await (await fetch(`http://127.0.0.1:8080/demo/${id}`)).json()
+    subm.value = "update"
     markform_1.value = data.name
     markform_2.value = data.type
     markform_3.value = data.mark
     mark.style.display = "block"
     subm.onclick = async function () {
-        let res = await fetch(`http://127.0.0.1:8080/demo/${id}`, {
+        const res = await fetch(`http://127.0.0.1:8080/demo/${id}`, {
             body: JSON.stringify({
                 name: markform_1.value,
                 type: markform_2.value,
@@ -107,19 +100,18 @@ async function update(id) {
             headers: { 'content-type': 'application/json' },
             method: "PUT"
         })
-        let data = await res.json()
-        let event = new Event('click')
-        mark.dispatchEvent(event)
+        const data = await res.json()
+        mark.dispatchEvent(new Event('click'))
         alert(data.msg)
         this.onclick = null
         req()
     }
 }
 function create() {
-    subm.value = "创建"
+    subm.value = "create"
     mark.style.display = "block"
     subm.onclick = async function () {
-        let res = await fetch(`http://127.0.0.1:8080/demo`, {
+        const res = await fetch(`http://127.0.0.1:8080/demo`, {
             body: JSON.stringify({
                 name: markform_1.value,
                 type: markform_2.value,
@@ -129,13 +121,11 @@ function create() {
             headers: { 'content-type': 'application/json' },
             method: "POST"
         })
-        let data = await res.json()
-        let event = new Event('click')
-        mark.dispatchEvent(event)
+        const data = await res.json()
+        mark.dispatchEvent(new Event('click'))
         alert(data.msg)
         this.onclick = null
-        let change = new Event("change")
-        pagenum.dispatchEvent(change)
+        pagenum.dispatchEvent(new Event("change"))
     }
 }
 
@@ -153,13 +143,13 @@ window.onload = async () => {
         let index, offset, total, length
         let isInited = false
         window.req = async function () {
-            index = location.hash.substr(1) * 1 || 1
+            index = location.hash.substring(1) * 1 || 1
             offset = (index - 1) * limit
             let search = new URLSearchParams()
             search.append("limit", limit)
             search.append("offset", offset)
-            let res = await fetch(`http://127.0.0.1:8080/demos?${search}`)
-            let data = await res.json()
+            const res = await fetch(`http://127.0.0.1:8080/demos?${search}`)
+            const data = await res.json()
             total = data.total
             length = Math.ceil(total / limit)
             allnum.innerHTML = total
@@ -175,33 +165,33 @@ window.onload = async () => {
                 }
                 list.innerHTML = data.slice_data.reduce((html, v) => html + `
                     <li>
-                        <span><img class='img_item' onclick="check(${v.id})" data-id='${v.id}' data-check='0' src='/img/未选.svg'></span>
+                        <span><img class='img_item' onclick="check(${v.id})" data-id='${v.id}' data-check='0' src='/img/uncheck.svg'></span>
                         <span>${v.id}</span>
                         <span>${v.name}</span>
                         <span>${v.type}</span>
                         <span>${v.mark}</span>
                         <span>${v.create_at}</span>
-                        <span><a onclick="update(${v.id})"><img src='/img/修改.svg'>修改</a> <a onclick="delone(${v.id})"><img src='/img/删除.svg'>删除</a></span>
+                        <span><a onclick="update(${v.id})"><img src='/img/edit.svg'></a>&nbsp;&nbsp;<a onclick="delone(${v.id})"><img src='/img/del.svg'></a></span>
                     </li>
                 `, `<li>
-                        <span><img class='img_all' onclick="checkAll()" data-check='0' src='/img/未选.svg'></span>
-                        <span><b>编号</b></span>
-                        <span><b>名称</b></span>
-                        <span><b>类型</b></span>
-                        <span><b>备注</b></span>
-                        <span><b>创建时间</b></span>
-                        <span><b>操作</b></span>
+                        <span><img class='img_all' onclick="checkAll()" data-check='0' src='/img/uncheck.svg'></span>
+                        <span><b>id</b></span>
+                        <span><b>name</b></span>
+                        <span><b>type</b></span>
+                        <span><b>mark</b></span>
+                        <span><b>create time</b></span>
+                        <span><b>operation</b></span>
                 </li>`)
             }else{
                 list.innerHTML = `<li>
-                    <span><img class='img_all' onclick="checkAll()" data-check='0' src='/img/未选.svg'></span>
-                    <span><b>编号</b></span>
-                    <span><b>名称</b></span>
-                    <span><b>类型</b></span>
-                    <span><b>备注</b></span>
-                    <span><b>创建时间</b></span>
-                    <span><b>操作</b></span>
-                </li>` + `<li><span></span><span></span><span></span><span>暂无数据</span><span></span><span></span><span></span></li>`
+                    <span><img class='img_all' onclick="checkAll()" data-check='0' src='/img/uncheck.svg'></span>
+                    <span><b>id</b></span>
+                    <span><b>name</b></span>
+                    <span><b>type</b></span>
+                    <span><b>mark</b></span>
+                    <span><b>create time</b></span>
+                    <span><b>operation</b></span>
+                </li>` + `<li><span></span><span></span><span></span><span>no more</span><span></span><span></span><span></span></li>`
             }
         }
         await req()
@@ -219,7 +209,6 @@ window.onload = async () => {
         window.onhashchange()
         const btninit = () => {
             window.pagebtn = []
-
             for (let i of range(0, length)) {
                 let btn = document.createElement("li")
                 btn.onclick = function () {
@@ -244,14 +233,13 @@ window.onload = async () => {
                 page.insertBefore(btn, next)
                 pagebtn.push(btn)
             }
-            let ld = document.createElement("li")
-            let rd = document.createElement("li")
-            ld.style.display = 'none'
-            rd.style.display = 'none'
+            let ld = document.createElement("li"), rd = document.createElement("li")
             ld.id = 'ld'
             rd.id = 'rd'
             ld.innerHTML = '...'
             rd.innerHTML = '...'
+            ld.style.display = 'none'
+            rd.style.display = 'none'
             page.insertBefore(ld, pagebtn[1])
             page.insertBefore(rd, pagebtn[length - 1])
             function omit(i) {
@@ -279,12 +267,8 @@ window.onload = async () => {
                 }
             }
             pagebtn[index - 1]?.click()
-            prev.onclick = function () {
-                pagebtn[Math.max(0, index - 2)].onclick()
-            }
-            next.onclick = function () {
-                pagebtn[Math.min(length - 1, index)].onclick()
-            }
+            prev.onclick = () => pagebtn[Math.max(0, index - 2)].onclick()
+            next.onclick = () => pagebtn[Math.min(length - 1, index)].onclick()
         }
         btninit()
         pagenum.onchange = async function () {
