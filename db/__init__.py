@@ -20,7 +20,10 @@ ini.read(Path.cwd() / Path('config.ini'), encoding='utf8')
 cfg = ini['db']
 
 # 数据库引擎，也是连接池
-async_egn = create_async_engine(cfg.get('mysql'))
+async_egn = create_async_engine(
+    cfg.get('mysql'),
+    pool_recycle = 7200
+)
 
 # 创建session元类
 async_session_local: Callable[..., AsyncSession] = sessionmaker(
