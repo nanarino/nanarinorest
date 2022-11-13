@@ -22,7 +22,7 @@ cfg = ini['db']
 # 数据库引擎，也是连接池
 async_egn = create_async_engine(
     cfg.get('mysql'),
-    pool_recycle = 7200
+    pool_recycle=cfg.getint('recycle', 7200)
 )
 
 # 创建session元类
