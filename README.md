@@ -22,7 +22,7 @@
 
 ## 环境
 
-- python 3.9
+- python 3.9+
 - mysql 5.7 （charset==utf8mb4）
 - redis 5+
 
@@ -35,6 +35,7 @@ pip install -r requirements.txt
   fastapi-limiter
   # 从pip下载的库不是最新版本
   # 见 https://github.com/long2ice/fastapi-limiter/issues/18#issuecomment-955888999
+  # 国内windows安装需要设置代理 命令：pip install git+https://github.com/long2ice/fastapi-limiter.git --proxy="https://127.0.0.1:7890" --user
 
 
 # 配置好./config.ini后创建空的数据表
