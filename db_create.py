@@ -10,7 +10,7 @@ AttributeError: 'AsyncEngine' object has no attribute '_run_ddl_visitor'
 
     for name, table in inspect.getmembers(db.models, inspect.isclass):
         if inspect.getmodule(table).__name__ == 'db.models':
-            print(table.__text__())
+            print(table.__ddl__())
 ```
 
 asyncio.run 报错RuntimeError: Event loop is closed 是正常现象

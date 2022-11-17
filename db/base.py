@@ -24,9 +24,9 @@ class mapper_to_dict_able_mixin:
         return getattr(self, key)
 
 
-class create_text_mixin:
-    '''混入继承 混入后可以使用__text__获得创表语句'''
+class create_ddl_mixin:
+    '''混入继承 混入后可以使用__ddl__获得创表语句'''
 
     @classmethod
-    def __text__(cls) -> CreateTable:
+    def __ddl__(cls) -> CreateTable:
         return CreateTable(table(cls))
