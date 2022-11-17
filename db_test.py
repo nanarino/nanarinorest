@@ -26,21 +26,13 @@ async def test_insert():
         await session.commit()
 
 
-async def test_insert_get_new_id_by_autocommit():
-    async with async_session_local() as session:
-        async with session.begin():# 开启事务，退出上下文后自动session.commit()
-            new_demo = Demo(name='test_insert_get_new_id_by_autocommit')
-            session.add(new_demo)
-            await session.flush() #提交更改 以拿到自增后的id
-            print(new_demo.id)
-
 async def test_insert_get_new_id():
     async with async_session_local() as session:
-        new_demo = Demo(name='test_insert_get_new_id')
-        session.add(new_demo)
-        await session.flush()
-        print(new_demo.id)
-        await session.commit()  # 推荐手动提交
+        async with session.begin():  # 开启事务，退出上下文后自动session.commit()
+            new_demo = Demo(name='test_insert_get_new_id_by_autocommit')
+            session.add(new_demo)
+            await session.flush()  # 提交更改 以拿到自增后的id
+            print(new_demo.id)
 
 
 def start_loop(loop):
@@ -57,6 +49,5 @@ new_loop = asyncio.new_event_loop()
 t = Thread(target=start_loop, args=(new_loop,))
 t.start()
 asyncio.run_coroutine_threadsafe(test_insert_get_new_id(), new_loop)
-asyncio.run_coroutine_threadsafe(test_insert_get_new_id_by_autocommit(), new_loop)
 asyncio.run_coroutine_threadsafe(end_loop(3), new_loop)
 t.join()

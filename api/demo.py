@@ -19,29 +19,33 @@ async def get_demo(id: int, dbs: AsyncSession = Depends(db_session)):
 @demo.post('/demo', summary="新增单条")
 async def create_demo(data: schemas.demo_update, dbs: AsyncSession = Depends(db_session)):
     new_demo = Demo(create_at=datetime.now(), is_active=1, **data.dict())
-    dbs.add(new_demo)
-    # 使用await dbs.flush()后 new_demo.id可以拿到新增的行的id
-    await dbs.commit()
-    return {"msg": "新增成功"}
+    async with dbs.begin():
+        dbs.add(new_demo)
+        await dbs.flush() # flush后可以拿到新增的行的id
+        id = new_demo.id
+        await dbs.commit()
+    return {"msg": "新增成功", "id": id}
 
 
 @demo.delete('/demos', summary="删除指定多条")
 async def delete_demos(id: set[int] = Query(..., min_items=1, max_items=5), dbs: AsyncSession = Depends(db_session)):
-    _orm = select(Demo).where(Demo.id.in_(id))
-    demos_qs: list[Demo] = (await dbs.execute(_orm)).scalars().all()
-    for d in demos_qs:
-        d.is_active = 0
-    await dbs.commit()
+    async with dbs.begin():
+        _orm = select(Demo).where(Demo.id.in_(id))
+        demos_qs: list[Demo] = (await dbs.execute(_orm)).scalars().all()
+        for d in demos_qs:
+            d.is_active = 0
+        await dbs.commit()
     return {"msg": "删除成功"}
 
 
 @demo.put('/demo/{id}', summary="修改单条")
 async def update_demo(id: int, data: schemas.demo_update, dbs: AsyncSession = Depends(db_session)):
-    _orm = select(Demo).where(Demo.id == id)
-    this_demo: Demo = (await dbs.execute(_orm)).scalars().first()
-    for k, v in data.dict().items():
-        setattr(this_demo, k, v)
-    await dbs.commit()
+    async with dbs.begin():
+        _orm = select(Demo).where(Demo.id == id)
+        this_demo: Demo = (await dbs.execute(_orm)).scalars().first()
+        for k, v in data.dict().items():
+            setattr(this_demo, k, v)
+        await dbs.commit()
     return {"msg": "更新成功"}
 
 

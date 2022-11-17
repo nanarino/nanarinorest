@@ -59,18 +59,19 @@ async def sign_up(
     dbs: AsyncSession = Depends(db_session)
 ):
     select_orm = select(User).where(User.username == form.username)
-    if (await dbs.execute(select_orm)).scalars().first() is not None:
-        raise HTTPException(
-            status_code=403, detail="The username already exists")
-    hashed_pwd = pwd.hash(form.password)
-    new_user = User(username=form.username, password=hashed_pwd)
-    dbs.add(new_user)
-    await dbs.flush()
-    access_token = jwt.ecd(schemas.auth_token_data(
-        uid=new_user.id,
-        uname=form.username
-    ).dict())
-    await dbs.commit()
+    async with dbs.begin():
+        if (await dbs.execute(select_orm)).scalars().first() is not None:
+            raise HTTPException(
+                status_code=403, detail="The username already exists")
+        hashed_pwd = pwd.hash(form.password)
+        new_user = User(username=form.username, password=hashed_pwd)
+        dbs.add(new_user)
+        await dbs.flush()
+        access_token = jwt.ecd(schemas.auth_token_data(
+            uid=new_user.id,
+            uname=form.username
+        ).dict())
+        await dbs.commit()
     return {"access_token": access_token}
 
 
