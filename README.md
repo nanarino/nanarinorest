@@ -67,7 +67,7 @@ py app.py
 └── requirements.txt   # 依赖列表
 
 │
-demo_frontend          # 为 Demo api 编写的 Demo Frontend
+static/index.html          # 为 Demo api 编写的 Demo Frontend
 
 ```
 
@@ -75,14 +75,10 @@ demo_frontend          # 为 Demo api 编写的 Demo Frontend
 ---
 
 
-## 运行前端
+## 前端
 
-将app.py运行到127.0.0.1:8080后，运行与其对应的 demo前端
+运行后 http://127.0.0.1:8080/index.html 直接访问
 
-```bash
+UI lib：[UI5](https://sap.github.io/ui5-webcomponents/)
 
-cd demo_frontend
-
-py -m http.server 8081
-
-```
+依赖使用JSPM+CDN
