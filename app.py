@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 import api
 import redis.asyncio as aioredis
 from fastapi_limiter import FastAPILimiter
 import db
+from pathlib import Path
 
 
 app = FastAPI(title='nanarinorest', description="""
@@ -36,6 +38,9 @@ app.add_middleware(
 app.include_router(api.demo)
 app.include_router(api.auth, tags=["auth"])
 
+# 前端
+app.mount(
+    "/", StaticFiles(directory=Path(__file__).parent.joinpath("static"), html=True))
 
 if __name__ == '__main__':
     import os

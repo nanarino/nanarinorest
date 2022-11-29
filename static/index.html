@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nanari no REST Demo</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "@ui5/webcomponents-icons/dist/AllIcons.js": "https://ga.jspm.io/npm:@ui5/webcomponents-icons@1.9.1/dist/AllIcons.js",
+        "@ui5/webcomponents/dist/Button.js": "https://ga.jspm.io/npm:@ui5/webcomponents@1.9.1/dist/Button.js",
+        "@ui5/webcomponents/dist/Dialog.js": "https://ga.jspm.io/npm:@ui5/webcomponents@1.9.1/dist/Dialog.js",
+        "@ui5/webcomponents/dist/Input.js": "https://ga.jspm.io/npm:@ui5/webcomponents@1.9.1/dist/Input.js",
+        "@ui5/webcomponents/dist/Label.js": "https://ga.jspm.io/npm:@ui5/webcomponents@1.9.1/dist/Label.js",
+        "@ui5/webcomponents/dist/Option.js": "https://ga.jspm.io/npm:@ui5/webcomponents@1.9.1/dist/Option.js",
+        "@ui5/webcomponents/dist/Select.js": "https://ga.jspm.io/npm:@ui5/webcomponents@1.9.1/dist/Select.js",
+        "@ui5/webcomponents/dist/Table.js": "https://ga.jspm.io/npm:@ui5/webcomponents@1.9.1/dist/Table.js",
+        "@ui5/webcomponents/dist/TableCell.js": "https://ga.jspm.io/npm:@ui5/webcomponents@1.9.1/dist/TableCell.js",
+        "@ui5/webcomponents/dist/TableColumn.js": "https://ga.jspm.io/npm:@ui5/webcomponents@1.9.1/dist/TableColumn.js",
+        "@ui5/webcomponents/dist/TableRow.js": "https://ga.jspm.io/npm:@ui5/webcomponents@1.9.1/dist/TableRow.js",
+        "@ui5/webcomponents/dist/Toast.js": "https://ga.jspm.io/npm:@ui5/webcomponents@1.9.1/dist/Toast.js"
+      },
+      "scopes": {
+        "https://ga.jspm.io/": {
+          "@ui5/webcomponents-base/dist/": "https://ga.jspm.io/npm:@ui5/webcomponents-base@1.9.1/dist/",
+          "@ui5/webcomponents-icons/dist/": "https://ga.jspm.io/npm:@ui5/webcomponents-icons@1.9.1/dist/",
+          "@ui5/webcomponents-theming/dist/generated/themes/sap_fiori_3/parameters-bundle.css.js": "https://ga.jspm.io/npm:@ui5/webcomponents-theming@1.9.1/dist/generated/themes/sap_fiori_3/parameters-bundle.css.js",
+          "lit-html": "https://ga.jspm.io/npm:lit-html@2.4.0/development/lit-html.js",
+          "lit-html/": "https://ga.jspm.io/npm:lit-html@2.4.0/development/"
+        }
+      }
+    }
+  </script>
+  <script type="module" src="/js/main.js"></script>
+</head>
+
+<body>
+  <header>
+    <span class="header-half">
+      <ui5-button design="Positive" icon="add" id="add">Add</ui5-button>
+      <ui5-button design="Negative" icon="delete" id="del" disabled>Remove</ui5-button>
+    </span>
+
+    <span class="header-half">
+      <span id="page">
+        <ui5-button design="Emphasized" icon="navigation-left-arrow" id='prev'></ui5-button>
+        <ui5-button design="Emphasized" icon="navigation-right-arrow" id='next'></ui5-button>
+      </span>
+      <ui5-select id="pagenum">
+        <ui5-option value="10" selected>10 / Page</ui5-option>
+        <ui5-option value="20">20 / Page</ui5-option>
+        <ui5-option value="50">50 / Page</ui5-option>
+      </ui5-select>
+    </span>
+  </header>
+  <ui5-table mode="MultiSelect" id="table">
+    <ui5-table-column slot="columns">id</ui5-table-column>
+    <ui5-table-column slot="columns">name</ui5-table-column>
+    <ui5-table-column slot="columns">type</ui5-table-column>
+    <ui5-table-column slot="columns">mark</ui5-table-column>
+    <ui5-table-column slot="columns">create time</ui5-table-column>
+    <ui5-table-column slot="columns">operation</ui5-table-column>
+  </ui5-table>
+
+  <ui5-toast id="toast"></ui5-toast>
+
+  <ui5-dialog id="dialog">
+    <form onsubmit="return false">
+      <div class="form-item">
+        <ui5-label for="name">name: </ui5-label>
+        <ui5-input id="name"></ui5-input>
+      </div>
+      <div>
+        <ui5-label for="type">type: </ui5-label>
+        <ui5-input id="type"></ui5-input>
+      </div>
+      <div>
+        <ui5-label for="mark">mark: </ui5-label>
+        <ui5-input id="mark"></ui5-input>
+      </div>
+    </form>
+    <div slot="footer">
+      <ui5-button design="Emphasized" id="submit">Submit</ui5-button>
+      <ui5-button id="cancel">Cancel</ui5-button>
+    </div>
+  </ui5-dialog>
+</body>
+
+</html>
