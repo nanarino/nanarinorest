@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nanari no REST Demo</title>
+  <title>CURD Demo</title>
   <link rel="stylesheet" href="/css/style.css">
   <script type="importmap">
     {
@@ -33,7 +33,20 @@
       }
     }
   </script>
-  <script type="module" src="/js/main.js"></script>
+  <script type="module">
+    import "@ui5/webcomponents-icons/dist/AllIcons.js"
+    import "@ui5/webcomponents/dist/Button.js"
+    import "@ui5/webcomponents/dist/Table.js"
+    import "@ui5/webcomponents/dist/TableColumn.js"
+    import "@ui5/webcomponents/dist/TableRow.js"
+    import "@ui5/webcomponents/dist/TableCell.js"
+    import "@ui5/webcomponents/dist/Select.js"
+    import "@ui5/webcomponents/dist/Option.js"
+    import "@ui5/webcomponents/dist/Toast.js"
+    import "@ui5/webcomponents/dist/Dialog.js"
+    import "@ui5/webcomponents/dist/Label.js"
+    import "@ui5/webcomponents/dist/Input.js"
+  </script>
 </head>
 
 <body>
@@ -86,6 +99,8 @@
       <ui5-button id="cancel">Cancel</ui5-button>
     </div>
   </ui5-dialog>
+
+  <script type="module" src="/js/main.js"></script>
 </body>
 
 </html>

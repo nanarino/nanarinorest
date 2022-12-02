@@ -67,7 +67,7 @@ py app.py
 └── requirements.txt   # 依赖列表
 
 │
-static/index.html          # 为 Demo api 编写的 Demo Frontend
+static/index.html          # 为 Demo api 编写的 增删改查Demo页
 
 ```
 
@@ -75,10 +75,10 @@ static/index.html          # 为 Demo api 编写的 Demo Frontend
 ---
 
 
-## 前端
+## Demo前端
 
-运行后 http://127.0.0.1:8080/index.html 直接访问
+运行后 http://127.0.0.1:8080/ 直接访问Demo页
 
-UI lib：[UI5](https://sap.github.io/ui5-webcomponents/)
+UI lib：![UI5 Web Components](./static/favicon.ico)[UI5 Web Components](https://sap.github.io/ui5-webcomponents/)
 
-依赖使用JSPM+CDN
+demo页面的前端依赖使用JSPM工具从cdn获取`importmap`，而不是前端构建工具从`node-modules`打包
