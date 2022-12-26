@@ -6,19 +6,15 @@
 
 ---
 
-
-
 ## API demo
 
-增删改查完备，生成的接口文档 http://127.0.0.1:8080/docs
+增删改查完备，本地生成的swagger文档: http://127.0.0.1:8080/docs
 
 - GET    /demo/{id}    指定获取单条
 - PUT    /demo/{id}    修改指定单条
 - POST    /demo    新增单条
 - GET    /demos    分页获取多条
 - DELETE    /demos    删除指定多条
-
-
 
 ## 环境
 
@@ -46,7 +42,6 @@ py app.py
 
 ```
 
-
 ## 目录
 
 ```python
@@ -67,18 +62,16 @@ py app.py
 └── requirements.txt   # 依赖列表
 
 │
-static/index.html          # 为 Demo api 编写的 增删改查Demo页
+static/index.html      # 为 Demo api 编写的 增删改查Demo页
 
 ```
 
-
 ---
 
+## 示例前端
 
-## Demo前端
-
-运行后 http://127.0.0.1:8080/ 直接访问Demo页
+运行后 http://127.0.0.1:8080/ 本地直接访问增删改查的Demo页
 
 UI lib：![UI5 Web Components](./static/favicon.ico)[UI5 Web Components](https://sap.github.io/ui5-webcomponents/)
 
-demo页面的前端依赖使用JSPM工具从cdn获取`importmap`，而不是前端构建工具从`node-modules`打包
+前端依赖使用[JSPM工具](https://generator.jspm.io/)从cdn获取`importmap`，而不是前端构建工具从`node-modules`打包
