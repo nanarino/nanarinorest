@@ -1,5 +1,4 @@
 """数据库连接测试"""
-from threading import Thread
 import asyncio
 from sqlalchemy import select, insert
 from db.models import Demo
@@ -8,46 +7,34 @@ from db import async_session_local
 
 async def test_select():
     async with async_session_local() as session:
-        _orm = select(Demo).where(Demo.id == 1)
-        result: Demo = (await session.execute(_orm)).scalars().first()
-        print(dict(result))
-
-
-async def test_select_by_pk():
-    async with async_session_local() as session:
-        if (result := await session.get(Demo, 2)) is not None:
+        async with session.begin():
+            _orm = select(Demo).where(Demo.id == 1)
+            result: Demo = (await session.execute(_orm)).scalars().first()
             print(dict(result))
+
+
+async def test_select_by_pk(pk):
+    async with async_session_local() as session:
+        async with session.begin():
+            if (result := await session.get(Demo, pk)) is not None:
+                print(dict(result))
 
 
 async def test_insert():
     async with async_session_local() as session:
-        _orm = insert(Demo).values(name='插入测试')
-        await session.execute(_orm)
-        await session.commit()
+        async with session.begin():
+            _orm = insert(Demo).values(name='插入测试')
+            await session.execute(_orm)
+            await session.commit()
 
 
-async def test_insert_get_new_id():
-    async with async_session_local() as session:
-        async with session.begin():  # 开启事务，退出上下文后自动session.commit()
-            new_demo = Demo(name='test_insert_get_new_id_by_autocommit')
-            session.add(new_demo)
-            await session.flush()  # 提交更改 以拿到自增后的id
-            print(new_demo.id)
+async def main():
+    """
+        使用`asyncio.run`结束时抛出`RuntimeError: Event loop is closed`
+        是Windows平台上常见且可以忽略的异常
+    """
+    await test_select()
+    await test_select_by_pk(2)
 
 
-def start_loop(loop):
-    asyncio.set_event_loop(loop)
-    loop.run_forever()
-
-
-async def end_loop(timeout=15):
-    await asyncio.sleep(timeout)
-    loop = asyncio.get_event_loop()
-    loop.stop()
-
-new_loop = asyncio.new_event_loop()
-t = Thread(target=start_loop, args=(new_loop,))
-t.start()
-asyncio.run_coroutine_threadsafe(test_insert_get_new_id(), new_loop)
-asyncio.run_coroutine_threadsafe(end_loop(3), new_loop)
-t.join()
+asyncio.run(main())
