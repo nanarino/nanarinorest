@@ -3,14 +3,14 @@
 包括 已配置的引擎 已配置的会话元类和生成器 数据库模型
 
 '''
-from .base import table, metadata
+from .base import table, metadata, Model
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from . import models
 from typing import Callable, AsyncGenerator
 
 __all__ = ['async_egn', 'async_session_local', 'db_session',
-           'table', 'metadata', 'models', AsyncSession]
+           'table', 'metadata', 'Model', 'models', "AsyncSession"]
 
 # 读取配置文件
 from pathlib import Path
@@ -31,7 +31,7 @@ async_session_local: Callable[..., AsyncSession] = sessionmaker(
     autocommit=cfg.getboolean('autocommit', False),
     autoflush=cfg.getboolean('autoflush', False),
     bind=async_egn
-)
+)  # type: ignore
 
 
 async def db_session() -> AsyncGenerator[AsyncSession, None]:

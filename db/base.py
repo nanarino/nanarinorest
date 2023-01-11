@@ -2,20 +2,25 @@
 from sqlalchemy.orm import registry
 from sqlalchemy import Table
 from sqlalchemy.schema import CreateTable
+from typing import NewType
 
 # 声明映射
 mapper_registry = registry()
 Base = mapper_registry.generate_base()
+Model = NewType('Model', Base)
 metadata = Base.metadata
 
 
-def table(mapper: Base) -> Table:
+def table(mapper: Model) -> Table:
     """表映射声明类 转 表对象"""
     return mapper.__table__
 
 
-class mapper_to_dict_able_mixin:
-    '''混入继承 混入后结果集能直接转化为dict'''
+class mapper_to_dict_able_mixin(Base):
+    '''原定为混入继承 混入后结果集能直接转化为dict
+    
+        后来解决使用table时的Unknown类型问题改为本身继承Base
+    '''
 
     def keys(self):
         return map(lambda c: c.key, table(self).columns)
@@ -24,8 +29,11 @@ class mapper_to_dict_able_mixin:
         return getattr(self, key)
 
 
-class create_ddl_mixin:
-    '''混入继承 混入后可以使用__ddl__获得创表语句'''
+class create_ddl_mixin(Base):
+    '''原定为混入继承 混入后可以使用__ddl__获得创表语句
+    
+        后来解决使用table时的Unknown类型问题改为本身继承Base
+    '''
 
     @classmethod
     def __ddl__(cls) -> CreateTable:
