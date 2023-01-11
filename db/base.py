@@ -1,6 +1,6 @@
 """一些sqlalchemy.orm的mapper基类"""
 from sqlalchemy.orm import registry
-from sqlalchemy import Table, Column
+from sqlalchemy import Table
 from sqlalchemy.schema import CreateTable
 from typing import NewType, Optional, Iterable
 

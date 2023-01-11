@@ -20,10 +20,10 @@ async def test_select_by_pk(pk):
                 print(dict(result))
 
 
-async def test_insert():
+async def test_insert(name='插入测试'):
     async with async_session_local() as session:
         async with session.begin():
-            _orm = insert(Demo).values(name='插入测试')
+            _orm = insert(Demo).values(name=name)
             await session.execute(_orm)
             await session.commit()
 
@@ -35,6 +35,6 @@ async def main():
     """
     await test_select()
     await test_select_by_pk(2)
-
+    await test_insert()
 
 asyncio.run(main())
