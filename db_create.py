@@ -28,7 +28,7 @@ async def main():
         使用`asyncio.run`结束时抛出`RuntimeError: Event loop is closed`
         是Windows平台上常见且可以忽略的异常
     """
-    # await test_create_all()
-    await test_get_create_ddl()
+    await test_create_all()
+    # await test_get_create_ddl()
 
 asyncio.run(main())
