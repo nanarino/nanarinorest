@@ -2,7 +2,7 @@
 from sqlalchemy.orm import registry
 from sqlalchemy import Table
 from sqlalchemy.schema import CreateTable
-from typing import NewType, Optional, Iterable
+from typing import NewType, Optional, Iterable, Union
 
 # 声明映射
 mapper_registry = registry()
@@ -11,7 +11,7 @@ Model = NewType('Model', Base)
 metadata = Base.metadata
 
 
-def table(mapper: Model | type[Model]) -> Table:
+def table(mapper: Union[Model, type[Model]]) -> Table:
     """表映射声明类 转 表对象"""
     return mapper.__table__
 
