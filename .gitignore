@@ -1,3 +1,4 @@
+# local IDE settings
 /.idea
 /.vscode
 */.idea
@@ -12,3 +13,10 @@
 # cpython
 __pycache__/
 *.py[cod]
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
