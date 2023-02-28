@@ -31,10 +31,8 @@ pip install -r requirements.txt
   fastapi-limiter
   # 从pip下载的库不是最新版本
   # 见 https://github.com/long2ice/fastapi-limiter/issues/18#issuecomment-955888999
-  # 国内windows安装需要设置代理 命令：
-  # pip install -i https://pypi.tuna.tsinghua.edu.cn/simple poetry-core
-  # pip install git+https://github.com/long2ice/fastapi-limiter.git --proxy="https://127.0.0.1:7890" (可能需要：--user)
-
+  # 中国大陆安装可能需要设置git代理
+  # 
 
 # 配置好./config.ini后创建空的数据表
 py db_create.py

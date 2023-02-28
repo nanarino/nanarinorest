@@ -9,8 +9,8 @@ const pagenum = document.getElementById('pagenum')
 const prev = document.getElementById('prev')
 const next = document.getElementById('next')
 
-let limit = 10, index, offset, total, length, is_page_button_should_render = true
-const fetch_table_data = async function () { // 请求并渲染table数据
+let limit = 10, index, offset, total, length
+const fetch_table_data = async function () { // 请求并渲染table数据 返回是否需要去前一页
   table.active = true
   index = location.hash.substring(1) * 1 || 1
   offset = (index - 1) * limit
@@ -18,12 +18,8 @@ const fetch_table_data = async function () { // 请求并渲染table数据
   const data = await res.json()
   total = data.total
   length = Math.ceil(total / limit)
-  if (index > length) {
-    index = length
-    location.hash = '#' + length
-    return
-  }
   ;[...document.querySelectorAll("ui5-table-row")].forEach(row => table.removeChild(row))
+  if (index > length) return index = length
   data.slice_data.forEach(v => {
     const new_row = document.createElement('ui5-table-row')
     new_row.id = v.id
@@ -179,25 +175,30 @@ cancel_btn.addEventListener('click', () => dialog.close()) // 绑定模态框取
 
 Object.assign(window, {
   async onload() {
-    await fetch_table_data()
-    render_page_buttons()
-
+    this.afterhashchange = render_page_buttons
     this.onhashchange = async () => {
-      if (location.hash === '') return location.hash = '#1'
-      if (is_page_button_should_render) return is_page_button_should_render = false
-      await fetch_table_data()
+      if (!location.hash) return location.hash = '#1'
+      const is_goto_prev = await fetch_table_data()
+      if (is_goto_prev) {
+        this.afterhashchange = render_page_buttons
+        return location.hash = '#' + index
+      }
       table.fireEvent('selection-change') // 清除已选择的行
+      await this.afterhashchange?.()
+      this.afterhashchange = null
     }
     this.onhashchange()
 
     pagenum.addEventListener(`change`, async (e) => { // 绑定下拉框改变
       limit = Number.parseInt(e?.detail?.selectedOption?.value ?? limit)
       ;[...document.getElementsByClassName("page"), document.getElementById('ld'), document.getElementById('rd')].forEach(el => page.removeChild(el))
-      is_page_button_should_render = true
-      location.hash = '#' + Math.ceil(total * (index / length) / limit)
-      await fetch_table_data()
-      render_page_buttons()
-      table.fireEvent('selection-change') // 清除已选择的行
+      const new_index = Math.ceil(total * (index / length) / limit)
+      this.afterhashchange = render_page_buttons
+      if (new_index === index) {
+        this.onhashchange()
+      } else {
+        location.hash = '#' + new_index
+      }
     })
   },
   async delone(id) { // 删除1条
