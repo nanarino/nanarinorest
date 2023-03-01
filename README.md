@@ -25,14 +25,7 @@
 ```bash
 
 # 安装依赖
-pip install -r requirements.txt
-
-  #其中：
-  fastapi-limiter
-  # 从pip下载的库不是最新版本
-  # 见 https://github.com/long2ice/fastapi-limiter/issues/18#issuecomment-955888999
-  # 中国大陆安装可能需要设置git代理
-  # 
+py -m pip install -r requirements.txt
 
 # 配置好./config.ini后创建空的数据表
 py db_create.py

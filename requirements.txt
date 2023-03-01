@@ -8,4 +8,5 @@ python-multipart
 passlib
 bcrypt
 redis
-git+https://github.com/long2ice/fastapi-limiter.git
+# git+https://github.com/long2ice/fastapi-limiter.git
+fastapi-limiter
