@@ -30,7 +30,7 @@ class mapper_to_dict_able_mixin():
 
 
 class create_ddl_mixin():
-    '''原定为混入继承 混入后可以使用__ddl__获得创表语句'''
+    '''混入继承 混入后可以使用__ddl__获得创表语句'''
 
     @classmethod
     def __ddl__(cls) -> Optional[CreateTable]:

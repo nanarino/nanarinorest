@@ -2,6 +2,7 @@
 
 import db
 import asyncio
+from db.base import create_ddl_mixin
 
 
 async def test_create_all():
@@ -20,7 +21,8 @@ async def test_get_create_ddl():
     for name, table in inspect.getmembers(db.models, inspect.isclass):
         if (node := inspect.getmodule(table)) is not None:
             if node.__name__ == 'db.models':
-                print(table.__ddl__())
+                if issubclass(table, create_ddl_mixin):
+                    print(table.__ddl__())
 
 
 async def main():
@@ -29,6 +31,6 @@ async def main():
         是Windows平台上常见且可以忽略的异常
     """
     await test_create_all()
-    # await test_get_create_ddl()
+    await test_get_create_ddl()
 
 asyncio.run(main())
