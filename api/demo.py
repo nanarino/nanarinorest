@@ -11,55 +11,55 @@ from . import schemas
 demo = APIRouter(tags=["demo"])  # 和文件名一样方便导出
 
 
-@demo.get('/demo/{id}', response_model=Optional[schemas.demo], summary="指定获取单条")
-async def get_demo(id: int, dbs: AsyncSession = Depends(db_session)):
+@demo.get('/demo/{id}', summary="指定获取单条")
+async def get_demo(id: int, dbs: AsyncSession = Depends(db_session)) -> Optional[schemas.demo]:
     return await dbs.get(Demo, id)
 
 
 @demo.post('/demo', summary="新增单条")
-async def create_demo(data: schemas.demo_update, dbs: AsyncSession = Depends(db_session)):
+async def create_demo(data: schemas.demo_update, dbs: AsyncSession = Depends(db_session)) -> Optional[schemas.msg]:
     new_demo = Demo(create_at=datetime.now(), is_active=1, **data.dict())
     async with dbs.begin():
         dbs.add(new_demo)
-        await dbs.flush() # flush后可以拿到新增的行的id
-        id = new_demo.id
+        await dbs.flush()  # flush后可以拿到新增的行的id
+        id: int = new_demo.id
         await dbs.commit()
-    return {"msg": "新增成功", "id": id}
+    return schemas.msg(msg="新增成功", id=id)
 
 
 @demo.delete('/demos', summary="删除指定多条")
-async def delete_demos(id: set[int] = Query(..., min_items=1, max_items=5), dbs: AsyncSession = Depends(db_session)):
+async def delete_demos(id: set[int] = Query(..., min_items=1, max_items=5), dbs: AsyncSession = Depends(db_session)) -> Optional[schemas.msg]:
     async with dbs.begin():
-        _orm = select(Demo).where(Demo.id.in_(id))
-        demos_qs: list[Demo] = (await dbs.execute(_orm)).scalars().all()
+        _exec = select(Demo).where(Demo.id.in_(id))
+        demos_qs: list[Demo] = (await dbs.execute(_exec)).scalars().all()
         for d in demos_qs:
             d.is_active = 0
         await dbs.commit()
-    return {"msg": "删除成功"}
+    return schemas.msg(msg="删除成功")
 
 
 @demo.put('/demo/{id}', summary="修改单条")
-async def update_demo(id: int, data: schemas.demo_update, dbs: AsyncSession = Depends(db_session)):
+async def update_demo(id: int, data: schemas.demo_update, dbs: AsyncSession = Depends(db_session)) -> Optional[schemas.msg]:
     async with dbs.begin():
-        _orm = select(Demo).where(Demo.id == id)
-        this_demo: Demo = (await dbs.execute(_orm)).scalars().first()
+        _exec = select(Demo).where(Demo.id == id)
+        this_demo: Demo = (await dbs.execute(_exec)).scalars().first()
         for k, v in data.dict().items():
             setattr(this_demo, k, v)
         await dbs.commit()
-    return {"msg": "更新成功"}
+    return schemas.msg(msg="更新成功")
 
 
-@demo.get('/demos', response_model=schemas.demos_sliced, summary="分页获取多条")
+@demo.get('/demos', summary="分页获取多条")
 async def get_demos(
     limit: int = Query(5, ge=5, le=100),  # limit 5~100
     offset: int = Query(0, ge=0),         # offset >= 0
     dbs: AsyncSession = Depends(db_session)
-):
+) -> schemas.demos_sliced:
     # 总数据条数
-    total_orm = select(func.count(Demo.id)).where(Demo.is_active == 1)
-    total: int = (await dbs.execute(total_orm)).scalar()
+    total_exec = select(func.count(Demo.id)).where(Demo.is_active == 1)
+    total: int = (await dbs.execute(total_exec)).scalar()
     # 分页数据
-    slice_data_orm = select(Demo).where(Demo.is_active == 1).order_by(
+    slice_data_exec = select(Demo).where(Demo.is_active == 1).order_by(
         Demo.id).limit(limit).offset(offset)
-    slice_data: list[Demo] = (await dbs.execute(slice_data_orm)).scalars().all()
-    return {"total": total, "slice_data": slice_data}
+    slice_data: list[Demo] = (await dbs.execute(slice_data_exec)).scalars().all()
+    return schemas.demos_sliced(total=total, slice_data=slice_data)

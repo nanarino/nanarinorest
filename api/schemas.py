@@ -1,6 +1,13 @@
 """请求响应所需的类型注释 以及作为fastapi docs的schema"""
 from datetime import datetime
 from pydantic import BaseModel
+from typing import Optional
+
+
+class msg(BaseModel):
+    '''操作成功(?)的消息返回'''
+    msg: str
+    id: Optional[int] = None
 
 
 class demo_update(BaseModel):

@@ -8,8 +8,8 @@ from db import async_session_local
 async def test_select():
     async with async_session_local() as session:
         async with session.begin():
-            _orm = select(Demo).where(Demo.id == 1)
-            result: Demo = (await session.execute(_orm)).scalars().first()
+            _exec = select(Demo).where(Demo.id == 1)
+            result: Demo = (await session.execute(_exec)).scalars().first()
             print(dict(result))
 
 
@@ -23,8 +23,8 @@ async def test_select_by_pk(pk):
 async def test_insert(name='插入测试'):
     async with async_session_local() as session:
         async with session.begin():
-            _orm = insert(Demo).values(name=name)
-            await session.execute(_orm)
+            _exec = insert(Demo).values(name=name)
+            await session.execute(_exec)
             await session.commit()
 
 
