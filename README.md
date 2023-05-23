@@ -1,4 +1,4 @@
-# nanarinorest
+# ☘ 简易接口模板
 
 自用 restful api demo 模板。
 
