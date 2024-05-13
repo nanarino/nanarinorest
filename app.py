@@ -1,27 +1,23 @@
+from pathlib import Path
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-import api
 from fastapi_limiter import FastAPILimiter
 import db
-from pathlib import Path
+import api
 
 
-app = FastAPI(title='nanarinorest', description="""
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await FastAPILimiter.init(db.redis)
+    yield
+    await FastAPILimiter.close()
+
+
+app = FastAPI(lifespan=lifespan, title='nanarinorest', description="""
     * Oauth2授权强制字段名使用`username`和`password`，且规定请求使用`application/x-www-form-urlencoded`
 """)
-
-
-@app.on_event("startup")
-async def startup():
-    # 初始化限制器 用来限制api请求频率 默认返回429错误
-    await FastAPILimiter.init(db.redis)
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    # await FastAPILimiter.close()
-    await db.redis.close()
 
 
 # 允许跨域
