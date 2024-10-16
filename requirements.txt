@@ -2,7 +2,7 @@ pydantic
 uvicorn
 fastapi
 sqlalchemy~=1.4.26
-aiomysql
+asyncpg
 python-jose[cryptography]
 python-multipart
 passlib

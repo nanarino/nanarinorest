@@ -28,8 +28,9 @@ cfg = ini['db']
 
 # 数据库引擎，默认的连接池
 async_egn = create_async_engine(
-    cfg.get('mysql'),
-    pool_recycle=cfg.getint('recycle', 7200)
+    cfg.get('dsn'),
+    pool_recycle=cfg.getint('recycle', None),
+    pool_pre_ping=None if cfg.getint('recycle', None) else True
 )
 
 # 创建session元类

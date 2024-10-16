@@ -6,7 +6,7 @@
 
 [![python](https://img.shields.io/badge/python-3.11-ffd343.svg?style=for-the-badge&logo=python)](https://www.python.org/)
 [![fastapi](https://img.shields.io/badge/fastapi-0.95.1-009485.svg?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
-[![mysql](https://img.shields.io/badge/mysql-5.7/8.0-3e6e93.svg?style=for-the-badge&logo=mysql)](https://www.mysql.com/)
+[![pgsql](https://img.shields.io/badge/pgsql-15-336791.svg?style=for-the-badge&logo=postgresql)](https://www.postgresql.org/)
 [![redis](https://img.shields.io/badge/redis-5.0.14-ff4438.svg?style=for-the-badge&logo=redis)](https://redis.io/)
 
 ---
