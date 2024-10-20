@@ -10,10 +10,9 @@
 
 '''
 from .base import metadata
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from . import models
-from typing import Callable, AsyncGenerator
+from typing import AsyncGenerator
 import redis.asyncio as aioredis
 
 __all__ = ['async_egn', 'async_session_local',
@@ -29,18 +28,17 @@ cfg = ini['db']
 # 数据库引擎，默认的连接池
 async_egn = create_async_engine(
     cfg.get('dsn'),
-    pool_recycle=cfg.getint('recycle', None),
-    pool_pre_ping=None if cfg.getint('recycle', None) else True
+    pool_recycle=cfg.getint('recycle', -1),
+    pool_pre_ping=None if (cfg.getint('recycle', -1) > -1) else True
 )
 
 # 创建session元类
-async_session_local: Callable[..., AsyncSession] = sessionmaker(
+async_session_local = async_sessionmaker(
     class_=AsyncSession,
     autocommit=cfg.getboolean('autocommit', False),
     autoflush=cfg.getboolean('autoflush', False),
     bind=async_egn
-)  # type: ignore
-
+)
 
 async def db_session() -> AsyncGenerator[AsyncSession, None]:
     '''session生成器 作为fastapi的Depends选项'''

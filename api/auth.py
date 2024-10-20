@@ -36,14 +36,14 @@ async def sign_in(
     dbs: AsyncSession = Depends(db_session)
 ) -> schemas.auth_res:
     select_exec = select(User).where(User.username == form.username)
-    _user: User = (await dbs.execute(select_exec)).scalars().first()
+    _user = (await dbs.execute(select_exec)).scalars().first()
     if (_user is None) or not pwd.eq(form.password, _user.password):
         raise HTTPException(
             status_code=403, detail="Incorrect username or password")
     access_token = jwt.ecd(schemas.auth_token_data(
         uid=_user.id,
         uname=_user.username
-    ).dict())
+    ).model_dump())
     return schemas.auth_res(access_token=access_token)
 
 
@@ -68,7 +68,7 @@ async def sign_up(
         access_token = jwt.ecd(schemas.auth_token_data(
             uid=new_user.id,
             uname=form.username
-        ).dict())
+        ).model_dump())
         await dbs.commit()
     return schemas.auth_res(access_token=access_token)
 

@@ -2,7 +2,7 @@
 
 import db
 import asyncio
-from db.base import create_ddl_mixin
+from db.base import CreateDDLMixin
 
 
 async def test_create_all():
@@ -21,7 +21,7 @@ async def test_get_create_ddl():
     for name, table in inspect.getmembers(db.models, inspect.isclass):
         if (node := inspect.getmodule(table)) is not None:
             if node.__name__ == 'db.models':
-                if issubclass(table, create_ddl_mixin):
+                if issubclass(table, CreateDDLMixin):
                     print(table.__ddl__())
 
 

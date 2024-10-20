@@ -1,12 +1,11 @@
 pydantic
 uvicorn
 fastapi
-sqlalchemy~=1.4.26
+sqlalchemy >= 2.0
 asyncpg
 python-jose[cryptography]
 python-multipart
 passlib
 bcrypt
 redis
-# git+https://github.com/long2ice/fastapi-limiter.git
 fastapi-limiter

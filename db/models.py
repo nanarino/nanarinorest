@@ -1,21 +1,22 @@
 """数据表映射"""
-from .base import Base, mapper_to_dict_able_mixin, create_ddl_mixin
-from sqlalchemy import Column
+from .base import Base, AsdictableMixin, CreateDDLMixin
+from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import Integer, String, DateTime
+from datetime import datetime
 
 
-class Demo(mapper_to_dict_able_mixin, create_ddl_mixin, Base):
+class Demo(AsdictableMixin, CreateDDLMixin, Base):
     __tablename__ = 'demo'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(255))
-    type = Column(String(255))
-    mark = Column(String(255))
-    create_at = Column(DateTime)
-    is_active = Column(Integer)
+    id :Mapped[int] = mapped_column(Integer, primary_key=True)
+    name :Mapped[str] = mapped_column(String(255))
+    type :Mapped[str] = mapped_column(String(255))
+    mark :Mapped[str] = mapped_column(String(255))
+    create_at :Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
+    is_active :Mapped[int] = mapped_column(Integer, default=1)
 
 
-class User(mapper_to_dict_able_mixin, create_ddl_mixin, Base):
+class User(AsdictableMixin, CreateDDLMixin, Base):
     __tablename__ = 'user'
-    id = Column(Integer, primary_key=True)
-    username = Column(String(63))
-    password = Column(String(63))
+    id :Mapped[int] = mapped_column(Integer, primary_key=True)
+    username :Mapped[str] = mapped_column(String(63))
+    password :Mapped[str] = mapped_column(String(63))
