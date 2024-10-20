@@ -1,7 +1,7 @@
 """请求响应所需的类型注释 以及作为fastapi docs的schema"""
 from datetime import datetime
 from pydantic import BaseModel
-from typing import Optional, Sequence
+from typing import Optional
 
 
 class msg(BaseModel):
