@@ -1,15 +1,15 @@
 """一些sqlalchemy.orm的mapper基类"""
-from sqlalchemy.orm import registry, DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Table
 from sqlalchemy.schema import CreateTable
+from sqlalchemy.ext.asyncio import AsyncAttrs
 from typing import Optional, Iterable
 
-# 声明映射
-mapper_registry = registry()
-metadata = mapper_registry.metadata
 
-class Base(DeclarativeBase):
+class Base(AsyncAttrs, DeclarativeBase):
     pass
+
+metadata = Base.metadata
 
 def table(mapper: DeclarativeBase|type[DeclarativeBase]) -> Table:
     """表映射声明类 转 表对象"""
