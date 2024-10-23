@@ -1,14 +1,19 @@
-"""密码散列工具"""
-from passlib.context import CryptContext
+"""
+密码散列工具
 
-crypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+https://github.com/pyca/bcrypt/issues/684#issuecomment-1902590553
+"""
+import bcrypt
 
 
-def eq(pwd: str, hashed_pwd: str) -> bool:
+def eq(plain_password: str, hashed_password: bytes) -> bool:
     """前者散列后是否等于后者"""
-    return crypt_context.verify(pwd, hashed_pwd)
+    password_byte_enc = plain_password.encode('utf-8')
+    return bcrypt.checkpw(password_byte_enc , hashed_password)
 
 
-def hash(pwd: str) -> str:
+def hash(password: str) -> bytes:
     """散列"""
-    return crypt_context.hash(pwd)
+    pwd_bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password=pwd_bytes, salt=salt)

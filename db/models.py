@@ -2,6 +2,7 @@
 from .base import Base, AsdictableMixin, CreateDDLMixin
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import Integer, String, DateTime
+from sqlalchemy.dialects.postgresql import BYTEA
 from datetime import datetime
 
 
@@ -19,4 +20,4 @@ class User(AsdictableMixin, CreateDDLMixin, Base):
     __tablename__ = 'user'
     id :Mapped[int] = mapped_column(Integer, primary_key=True)
     username :Mapped[str] = mapped_column(String(63))
-    password :Mapped[str] = mapped_column(String(63))
+    password :Mapped[bytes] = mapped_column(BYTEA)

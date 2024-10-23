@@ -16,14 +16,14 @@ oauth2 = OAuth2PasswordBearer(tokenUrl="/auth/signin")
 async def current(token: str = Depends(oauth2)):
     """依赖项 获取当前用户id和用户名 失败401"""
     try:
-        dcd_user = schemas.auth_token_data(**jwt.dcd(token))
+        decode_user = schemas.auth_token_data(**jwt.decode(token))
     except ValidationError:
         raise HTTPException(
             status_code=401,
             detail="Invalid authentication credentials",
             headers={"WWW-Authenticate": "Bearer"}
         )
-    return dcd_user
+    return decode_user
 
 
 @auth.post("/auth/signin",
@@ -40,7 +40,7 @@ async def sign_in(
     if (_user is None) or not pwd.eq(form.password, _user.password):
         raise HTTPException(
             status_code=403, detail="Incorrect username or password")
-    access_token = jwt.ecd(schemas.auth_token_data(
+    access_token = jwt.encode(schemas.auth_token_data(
         uid=_user.id,
         uname=_user.username
     ).model_dump())
@@ -65,7 +65,7 @@ async def sign_up(
         new_user = User(username=form.username, password=hashed_pwd)
         dbs.add(new_user)
         await dbs.flush()
-        access_token = jwt.ecd(schemas.auth_token_data(
+        access_token = jwt.encode(schemas.auth_token_data(
             uid=new_user.id,
             uname=form.username
         ).model_dump())

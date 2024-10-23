@@ -5,7 +5,6 @@ sqlalchemy >= 2.0
 asyncpg
 python-jose[cryptography]
 python-multipart
-passlib
 bcrypt
 redis
 fastapi-limiter

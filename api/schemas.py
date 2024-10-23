@@ -40,7 +40,7 @@ class auth_token_data(BaseModel):
     '''jwt数据。 
 
     无法覆盖签发者iss，因为它读取配置文件
-    无法覆盖超时信息exp，因为它读取配置文件或者ecd的timeout参数
+    无法覆盖超时信息exp，因为它读取配置文件或者encode的timeout参数
     不应包含sub等信息 会被特殊处理甚至解析不了
     '''
     uid: int
