@@ -135,13 +135,13 @@ del_btn.addEventListener('click', async () => { // 绑定表头上删除按钮�
   const qs = selected_rows.reduce((qs, row) => (qs.append('id', row.id), qs), new URLSearchParams())
   const res = await fetch(`/demos?${qs}`, { cache: 'no-cache', method: "DELETE" })
   toast.innerText = (await res.json()).msg
-  toast.show()
+  toast.open = true
   pagenum.dispatchEvent(new Event("change"))
 })
 
 add_btn.addEventListener('click', () => {
   dialog.setAttribute(`header-text`, `Create Item`)
-  dialog.show()
+  dialog.open = true
 })
 
 submit_btn.addEventListener('click', async () => { // 绑定模态框提交按钮点击
@@ -164,13 +164,13 @@ submit_btn.addEventListener('click', async () => { // 绑定模态框提交按�
     })
     toast.innerText = (await res.json()).msg
   }
-  toast.show()
-  dialog.close()
+  toast.open = true
+  dialog.open = false
   form_name.value = form_type.value = form_mark.value = ''
   pagenum.dispatchEvent(new Event("change"))
 })
 
-cancel_btn.addEventListener('click', () => dialog.close()) // 绑定模态框取消按钮点击
+cancel_btn.addEventListener('click', () => dialog.open = false) // 绑定模态框取消按钮点击
 
 
 Object.assign(window, {
@@ -178,6 +178,7 @@ Object.assign(window, {
     this.afterhashchange = render_page_buttons
     this.onhashchange = async () => {
       if (!location.hash) return location.hash = '#1'
+      if (location.hash === '#NaN') return location.hash = '#1'
       const is_goto_prev = await fetch_table_data()
       if (is_goto_prev) {
         this.afterhashchange = render_page_buttons
@@ -204,7 +205,7 @@ Object.assign(window, {
   async delone(id) { // 删除1条
     const res = await fetch(`/demos?id=${id}`, { cache: 'no-cache', method: "DELETE" })
     toast.innerText = (await res.json()).msg
-    toast.show()
+    toast.open = true
     pagenum.dispatchEvent(new Event("change"))
   },
   async update(item) { // 更新
@@ -212,6 +213,6 @@ Object.assign(window, {
     form_type.value = item.type
     form_mark.value = item.mark
     dialog.setAttribute(`header-text`, `Update Item ${item.id}`)
-    dialog.show()
+    dialog.open = true
   }
 })

@@ -31,7 +31,7 @@ python app.py
 
 ## API demo
 
-增刪改查完備，啓動后見[swagger 文档](http://127.0.0.1:8080/docs)
+增刪改查完備，啓動后見 [swagger 文档](http://127.0.0.1:8080/docs)
 
 - GET /demo/{id} 指定獲取單條
 - PUT /demo/{id} 修改指定單條
@@ -71,4 +71,4 @@ static/index.html      # 爲 Demo api 編撰的 增删改查Demo界面
 
 UI 組件：![UI5 Web Components](./static/favicon.ico) [UI5 Web Components](https://sap.github.io/ui5-webcomponents/)
 
-組件依賴使用[JSPM 工具](https://generator.jspm.io/)从 cdn 獲取`importmap`，所以無需 nodejs 環境
+組件依賴使用 [JSPM 工具](https://generator.jspm.io/) 从 cdn 獲取 `importmap`，所以無需 nodejs 環境
