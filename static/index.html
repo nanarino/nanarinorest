@@ -58,53 +58,49 @@
     </head>
 
     <body>
+        <ui5-toast id="toast"></ui5-toast>
         <header>
-            <span class="header-half">
-                <ui5-button design="Positive" icon="add" id="add">Add</ui5-button>
-                <ui5-button design="Negative" icon="delete" id="del" disabled>Remove</ui5-button>
+            <span class="button-group">
+                <ui5-button design="Positive" icon="add"> Append </ui5-button>
+                <ui5-button design="Negative" icon="delete" disabled> Remove </ui5-button>
             </span>
-
-            <span class="header-half">
-                <ui5-pagination id="pagination"></ui5-pagination>
-                <ui5-select id="pagenum">
-                    <ui5-option value="10" selected>10 / Page</ui5-option>
-                    <ui5-option value="20">20 / Page</ui5-option>
-                    <ui5-option value="50">50 / Page</ui5-option>
+            <span class="button-group">
+                <ui5-pagination></ui5-pagination>
+                <ui5-select>
+                    <ui5-option value="10" selected> 10 / Page </ui5-option>
+                    <ui5-option value="20"> 20 / Page </ui5-option>
+                    <ui5-option value="50"> 50 / Page </ui5-option>
                 </ui5-select>
             </span>
         </header>
-        <ui5-table mode="MultiSelect" id="table">
-            <ui5-table-column slot="columns">id</ui5-table-column>
-            <ui5-table-column slot="columns">name</ui5-table-column>
-            <ui5-table-column slot="columns">type</ui5-table-column>
-            <ui5-table-column slot="columns">mark</ui5-table-column>
-            <ui5-table-column slot="columns">create time</ui5-table-column>
-            <ui5-table-column slot="columns">operation</ui5-table-column>
+        <ui5-table mode="MultiSelect">
+            <ui5-table-column slot="columns"> id </ui5-table-column>
+            <ui5-table-column slot="columns"> name </ui5-table-column>
+            <ui5-table-column slot="columns"> type </ui5-table-column>
+            <ui5-table-column slot="columns"> mark </ui5-table-column>
+            <ui5-table-column slot="columns"> create time </ui5-table-column>
+            <ui5-table-column slot="columns"> operation </ui5-table-column>
         </ui5-table>
-
-        <ui5-toast id="toast"></ui5-toast>
-
-        <ui5-dialog id="dialog">
+        <ui5-dialog>
             <form onsubmit="return false">
                 <div class="form-item">
-                    <ui5-label for="name">name: </ui5-label>
+                    <ui5-label for="name"> name: </ui5-label>
                     <ui5-input id="name"></ui5-input>
                 </div>
                 <div class="form-item">
-                    <ui5-label for="type">type: </ui5-label>
+                    <ui5-label for="type"> type: </ui5-label>
                     <ui5-input id="type"></ui5-input>
                 </div>
                 <div class="form-item">
-                    <ui5-label for="mark">mark: </ui5-label>
+                    <ui5-label for="mark"> mark: </ui5-label>
                     <ui5-input id="mark"></ui5-input>
                 </div>
             </form>
-            <div slot="footer">
-                <ui5-button design="Emphasized" id="submit">Submit</ui5-button>
-                <ui5-button id="cancel">Cancel</ui5-button>
-            </div>
+            <span class="button-group" slot="footer">
+                <ui5-button id="cancel"> Cancel </ui5-button>
+                <ui5-button design="Emphasized" id="submit"> Submit </ui5-button>
+            </span>
         </ui5-dialog>
-
         <script type="module" src="/main.js"></script>
     </body>
 </html>
