@@ -1,6 +1,4 @@
-# local IDE settings
-/.idea
-/.vscode
+# sub project IDE settings
 */.idea
 */.vscode
 
@@ -20,3 +18,6 @@ __pycache__/
 env/
 venv/
 ENV/
+
+# Just keep the package version up to date
+uv.lock

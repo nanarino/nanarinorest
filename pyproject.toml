@@ -1,0 +1,18 @@
+[project]
+name = "curd"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "asyncpg>=0.30.0",
+    "bcrypt>=4.2.1",
+    "fastapi>=0.115.6",
+    "fastapi-limiter>=0.1.6",
+    "pydantic>=2.10.5",
+    "python-jose[cryptography]>=3.3.0",
+    "python-multipart>=0.0.20",
+    "redis>=5.2.1",
+    "sqlalchemy>=2.0",
+    "uvicorn>=0.34.0",
+]

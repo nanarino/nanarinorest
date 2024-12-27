@@ -1,0 +1,5 @@
+indent-width = 4
+
+[format]
+docstring-code-format = true
+quote-style = "single"

@@ -1,6 +1,6 @@
 # ☘ 簡易接口模板
 
-自用的 簡易的 restful api demo 模板。
+自用但不推薦使用的 簡易的 FastAPI DEMO 模板。
 
 接口頻率限制依賴 redis，自用不需要時可以卸掉這個功能
 
@@ -14,15 +14,20 @@
 
 ## 初始運轉
 
-記得先進入虛擬環境
+記得先進入虛擬環境（或使用 `uv run`）
 
 ```bash
 
 # 安裝依賴
 pip install -r requirements.txt
+## 或者使用uv（試試套件咸更最新 若出問題了直接issue好吗🥰）
+uv lock --upgrade
+uv sync
 
 # 配置好./config.ini后創建空白資料表
-python db_create.py
+# PS: $env:PYTHONPATH = "./"
+# SH: export PYTHONPATH=./
+python ./scripts/db_create.py
 
 # 運轉項目
 python app.py
@@ -42,7 +47,7 @@ python app.py
 ## 目錄結構
 
 ```python
-/nanarino/nanarinorest # cwd
+/nanarino/curd # cwd
 │
 ├── app.py             # 程式入口
 ├── config.ini         # 配置文件
@@ -50,16 +55,16 @@ python app.py
 │   ├── __init__.py
 │   ├── auth.py        # Oauth2授權 登錄注冊的api
 │   ├── schemas.py     # 類型檢查以及DTO
-│   └── demo.py        # 一組增刪改查的 Demo api
+│   └── demo.py        # 一組增刪改查的 DEMO api
 ├── db
 │   ├── __init__.py
 │   ├── base.py        # 資料物件基類
 │   └── models.py      # 資料庫模型
 ├── util               # 工具函式
-└── requirements.txt   # 依賴的pip包
-
+└── requirements.txt   # 依賴的pip包 
+                       # 後面使用 `uv add -r requirements.txt` 補上了uv配置
 │
-static/index.html      # 爲 Demo api 編撰的 增删改查Demo界面
+static/index.html      # 爲 DEMO api 編撰的 增删改查DEMO界面
 
 ```
 
