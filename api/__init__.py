@@ -5,6 +5,7 @@
 routers都是fastapi.APIRouter实例
 
 """
+
 __all__ = ['schemas', 'demo', 'auth']
 
 from . import schemas

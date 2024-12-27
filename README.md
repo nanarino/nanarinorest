@@ -22,7 +22,7 @@
 pip install -r requirements.txt
 
 # 配置好./config.ini后創建空白資料表
-python db_create.py
+python ./scripts/db_create.py
 
 # 運轉項目
 python app.py
