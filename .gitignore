@@ -20,3 +20,6 @@ __pycache__/
 env/
 venv/
 ENV/
+
+# Just keep the package version up to date
+uv.lock

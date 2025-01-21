@@ -20,6 +20,8 @@
 
 # 安裝依賴
 pip install -r requirements.txt
+## 或者使用uv（試試套件咸更最新 若出問題了直接issue好吗🥰）
+uv lock --upgrade
 
 # 配置好./config.ini后創建空白資料表
 python ./scripts/db_create.py
@@ -50,16 +52,16 @@ python app.py
 │   ├── __init__.py
 │   ├── auth.py        # Oauth2授權 登錄注冊的api
 │   ├── schemas.py     # 類型檢查以及DTO
-│   └── demo.py        # 一組增刪改查的 Demo api
+│   └── demo.py        # 一組增刪改查的 DEMO api
 ├── db
 │   ├── __init__.py
 │   ├── base.py        # 資料物件基類
 │   └── models.py      # 資料庫模型
 ├── util               # 工具函式
-└── requirements.txt   # 依賴的pip包
-
+└── requirements.txt   # 依賴的pip包 
+                       # 後面使用 `uv add -r requirements.txt` 補上了uv配置
 │
-static/index.html      # 爲 Demo api 編撰的 增删改查Demo界面
+static/index.html      # 爲 DEMO api 編撰的 增删改查DEMO界面
 
 ```
 
