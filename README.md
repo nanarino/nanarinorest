@@ -14,7 +14,7 @@
 
 ## 初始運轉
 
-記得先進入虛擬環境
+記得先進入虛擬環境（或使用 `uv run`）
 
 ```bash
 
@@ -22,6 +22,7 @@
 pip install -r requirements.txt
 ## 或者使用uv（試試套件咸更最新 若出問題了直接issue好吗🥰）
 uv lock --upgrade
+uv sync
 
 # 配置好./config.ini后創建空白資料表
 # PS: $env:PYTHONPATH = "./"

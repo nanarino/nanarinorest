@@ -4,7 +4,6 @@ import asyncio
 from sqlalchemy import select, insert
 from db.models import Demo
 from db import async_session_local
-from typing import Final
 
 
 async def test_insert(row: dict = {'name': '測試', 'type': '測試', 'mark': '測試'}):
@@ -50,11 +49,5 @@ async def main():
     await test_select_top(10)
 
 
-asyncio.run(main())
-
-
-class A:
-    name: Final[str]
-
-    def __init__(self, name: str) -> None:
-        self.name = name
+if __name__ == '__main__':
+    asyncio.run(main())
