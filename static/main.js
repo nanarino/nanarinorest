@@ -10,7 +10,8 @@ const PAGE_SIZE_SELECT = document.querySelector("ui5-select")
 PAGE_SIZE_SELECT.addEventListener("change", async () => {
     const limit = PAGE_SIZE_SELECT.value
     const current = Math.ceil((data_total * (PAGE_NUM_SELECT.current / PAGE_NUM_SELECT.total)) / limit)
-    PAGE_NUM_SELECT.onChange(current)
+    if (current != PAGE_NUM_SELECT.current) PAGE_NUM_SELECT.onChange(current)
+    else window.onload()
 })
 // 清空表格
 TABLE._clean = () => {
@@ -105,7 +106,6 @@ APPEND_BTN.onclick = () => {
     DIALOG.dataset.id = ""
     DIALOG.open = true
 }
-
 
 // 绑定表格选中行修改
 const SELECTED_ROWS = []
