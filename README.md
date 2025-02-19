@@ -24,6 +24,8 @@ pip install -r requirements.txt
 uv lock --upgrade
 
 # 配置好./config.ini后創建空白資料表
+# PS: $env:PYTHONPATH = "./"
+# SH: export PYTHONPATH=./
 python ./scripts/db_create.py
 
 # 運轉項目
