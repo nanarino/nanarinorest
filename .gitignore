@@ -1,6 +1,4 @@
-# local IDE settings
-/.idea
-/.vscode
+# sub project IDE settings
 */.idea
 */.vscode
 
